@@ -1,0 +1,126 @@
+# ============================================================
+# WEB DESIGN BRIEF — Standard (Tier 2)
+# ============================================================
+# Fill in the sections below. Delete or comment out anything
+# you want Claude to infer from the aesthetic keywords.
+# ============================================================
+
+meta:
+  project: ""                            # Project name
+  date: ""                               # YYYY-MM-DD
+
+# ----------------------------------------------------------
+# AESTHETIC DIRECTION
+# ----------------------------------------------------------
+aesthetic:
+  # Pick 1-3 from: brutalist, minimalist, maximalist, organic,
+  # geometric, glassmorphism, neumorphism, dark-luxury, editorial,
+  # retro-futurism, swiss, japanese-minimalism, cyberpunk, bauhaus,
+  # art-deco, vaporwave, corporate-clean, handcrafted, magazine,
+  # dashboard, immersive
+  style: []
+
+  # Adjectives that guide the "feel"
+  mood: []
+
+  # What this should NOT feel like
+  avoid: []
+
+  # Optional references (URLs or screenshot paths)
+  references: []
+  # - url: "https://example.com"
+  #   note: "Like the typography hierarchy"
+  # - screenshot: "./refs/example.png"
+  #   note: "This color direction"
+
+# ----------------------------------------------------------
+# COLOR PALETTE
+# ----------------------------------------------------------
+color:
+  # "specify" (provide values), "generate" (Claude derives), "extract" (from references)
+  approach: generate
+
+  # If approach is "specify":
+  # palette:
+  #   background:
+  #     base: "oklch(0.13 0.01 260)"
+  #     surface: "oklch(0.18 0.01 260)"
+  #   foreground:
+  #     base: "oklch(0.95 0.01 90)"
+  #     muted: "oklch(0.65 0.02 260)"
+  #   accent:
+  #     primary: "oklch(0.75 0.15 55)"
+
+# ----------------------------------------------------------
+# TYPOGRAPHY
+# ----------------------------------------------------------
+typography:
+  loading: system-stack                   # google-fonts, local, system-stack, variable
+  # fonts:
+  #   heading:
+  #     family: ""
+  #     fallback: "sans-serif"
+  #   body:
+  #     family: ""
+  #     fallback: "system-ui, sans-serif"
+  scale:
+    method: ratio
+    base_size: "1rem"
+    ratio: 1.25                           # Major third
+
+# ----------------------------------------------------------
+# LAYOUT
+# ----------------------------------------------------------
+layout:
+  # grid, asymmetric, magazine, full-bleed, single-column, bento, dashboard
+  philosophy: single-column
+  grid:
+    max_width: "1200px"
+    margin: "clamp(1rem, 5vw, 4rem)"
+
+# ----------------------------------------------------------
+# MOTION & ANIMATION
+# ----------------------------------------------------------
+motion:
+  # full, reduced, none
+  level: full
+
+  # Which animation patterns to include:
+  patterns: []
+  # Options: scroll-reveal, parallax-layers, text-reveal, hover-lift,
+  #          magnetic-cursor, smooth-scroll, page-transition, cursor-spotlight,
+  #          gradient-morph, pin-and-reveal, horizontal-scroll, sticky-stack
+
+  # choreography:
+  #   stagger_delay: "60ms"
+  #   page_entrance: cascade              # cascade, center-out, random
+
+# ----------------------------------------------------------
+# PAGE STRUCTURE
+# ----------------------------------------------------------
+pages:
+  - id: home
+    sections: []
+    # - type: hero
+    #   variant: animated-text-reveal
+    #   content:
+    #     headline: ""
+    #     subheadline: ""
+    #     cta:
+    #       primary: { text: "", href: "" }
+    # - type: feature-grid
+    #   variant: bento-grid
+    # - type: contact
+    #   variant: minimal-form
+
+# ----------------------------------------------------------
+# CONSTRAINTS
+# ----------------------------------------------------------
+constraints:
+  output: single-file-html                # single-file-html, multi-file
+  target: github-pages                    # github-pages, static-cdn, local
+  performance:
+    total_bundle_size: "100kb"
+  accessibility:
+    level: "WCAG-AA"
+    prefers_reduced_motion: required

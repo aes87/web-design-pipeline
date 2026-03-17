@@ -1,0 +1,15 @@
+node_modules/
+dist/
+
+# Build artifacts
+designs/*/output/
+tests/visual/baselines/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~

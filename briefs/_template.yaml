@@ -1,0 +1,28 @@
+# Copy this file and rename it for your design.
+# See templates/ for Quick (Tier 1), Standard (Tier 2), and Full (Tier 3) examples.
+# See vocabulary/aesthetics.yaml for style keywords.
+# See vocabulary/patterns.yaml for component variants.
+# See vocabulary/motion.yaml for animation patterns.
+
+aesthetic:
+  style: []
+  mood: []
+  avoid: []
+  references: []
+
+color:
+  approach: generate
+
+motion:
+  level: full
+  patterns: []
+
+pages:
+  - id: home
+    sections: []
+
+constraints:
+  output: single-file-html
+  accessibility:
+    level: "WCAG-AA"
+    prefers_reduced_motion: required

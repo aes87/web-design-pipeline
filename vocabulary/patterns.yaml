@@ -1,0 +1,96 @@
+# Component Pattern Catalog (Summary)
+# Quick reference for pattern types and variants available in briefs.
+# Full implementation details are in patterns/*.md files.
+
+hero:
+  variants:
+    - static-centered
+    - animated-text-reveal
+    - video-background
+    - parallax-layers
+    - 3d-scene
+    - split-screen
+    - interactive-canvas
+    - gradient-morph
+  description: Full-viewport opening section
+
+navigation:
+  variants:
+    - sticky-minimal
+    - morphing-header
+    - hamburger-fullscreen
+    - sidebar-persistent
+    - bottom-bar-mobile
+    - command-palette
+  description: Site navigation and wayfinding
+
+content:
+  variants:
+    - bento-grid
+    - bento-asymmetric
+    - scroll-reveal-cards
+    - timeline-vertical
+    - timeline-horizontal
+    - split-image-text
+    - masonry
+    - accordion-faq
+    - tabbed-content
+    - stats-counter
+    - testimonial-carousel
+    - feature-comparison
+    - pricing-table
+  description: Main content sections
+
+micro-interactions:
+  variants:
+    - hover-lift
+    - hover-glow
+    - magnetic-button
+    - cursor-spotlight
+    - text-gradient-hover
+    - underline-draw
+    - button-ripple
+    - focus-ring
+    - image-reveal
+    - counter-tick
+  description: Small interactive feedback patterns
+
+scroll-sections:
+  variants:
+    - pin-and-reveal
+    - horizontal-scroll
+    - sticky-stack
+    - parallax-layers
+    - zoom-tunnel
+    - chapter-snap
+    - progress-driven
+    - batch-reveal
+  description: Scroll-driven content sections
+
+page-transitions:
+  variants:
+    - crossfade
+    - slide-directional
+    - curtain-wipe
+    - zoom-morph
+    - shared-element
+    - webgl-dissolve
+  description: Page-to-page transition animations
+
+backgrounds:
+  variants:
+    - grain-noise
+    - gradient-mesh
+    - shader-noise
+    - particle-field
+    - fluid-simulation
+    - aurora
+  description: Decorative background effects
+
+loading:
+  variants:
+    - skeleton-pulse
+    - progressive-blur
+    - logo-loader
+    - progress-bar
+  description: Loading and skeleton states

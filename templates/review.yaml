@@ -1,0 +1,33 @@
+# ============================================================
+# DESIGN REVIEW — Iteration N
+# ============================================================
+# Fill this out after viewing the generated design.
+# This structured format maps directly to code changes.
+# ============================================================
+
+review:
+  # Quick vibes check (1-10)
+  overall_impression: 0
+
+  # General notes (free-form)
+  general_notes: >
+    Write your overall impression here.
+
+  # Section-by-section feedback
+  sections:
+    - id: hero                            # Must match section type/id from brief
+      status: approved                    # approved | needs-revision | rethink
+      feedback: []
+      # - area: typography                # typography, animation, layout, color, content
+      #   issue: "What's wrong"
+      #   suggestion: "What to do instead"
+
+  # Global adjustments (apply everywhere)
+  global: []
+  # - category: motion                    # motion, color, spacing, typography
+  #   change: "Description of global change"
+
+  # Token-level overrides (most precise — use CSS custom property paths)
+  token_overrides: {}
+  # "motion.duration.base": "400ms"
+  # "semantic.accent.primary": "oklch(0.75 0.11 55)"

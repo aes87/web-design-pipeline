@@ -1,0 +1,204 @@
+# Motion Pattern Catalog
+# Reference for animation patterns available in design briefs.
+# Each pattern has a complexity tier, dependencies, and performance cost.
+
+# Complexity tiers:
+#   L = CSS-only (no JS required)
+#   M = CSS + GSAP (standard JS animation)
+#   H = WebGL / Three.js (GPU-intensive)
+
+# Performance cost: 1 (negligible) to 5 (heavy GPU/CPU)
+
+patterns:
+
+  # --- Scroll-Driven ---
+
+  scroll-reveal:
+    description: Elements animate in as they enter the viewport
+    complexity: L-M
+    cost: 1
+    deps: [css-scroll-timeline, gsap-scrolltrigger]
+    technique: |
+      CSS: animation-timeline: view() with fade + translateY
+      JS: IntersectionObserver or GSAP ScrollTrigger batch
+    defaults:
+      translateY: 30px
+      opacity: [0, 1]
+      duration: 600ms
+      easing: entrance
+      stagger: 60ms
+      threshold: 0.15
+
+  parallax-layers:
+    description: Elements move at different speeds on scroll for depth
+    complexity: M
+    cost: 2
+    deps: [gsap-scrolltrigger, lenis]
+    technique: |
+      GSAP ScrollTrigger with scrub. Different translateY amounts
+      per layer. Lenis for smooth base scroll.
+    defaults:
+      layers: 3
+      speed_range: [0.5, 1.5]  # relative to scroll speed
+
+  pin-and-reveal:
+    description: Section pins while content reveals within it
+    complexity: M
+    cost: 2
+    deps: [gsap-scrolltrigger]
+    technique: |
+      ScrollTrigger pin: true. Internal timeline animates
+      child elements while container stays fixed.
+
+  horizontal-scroll:
+    description: Vertical scroll drives horizontal movement
+    complexity: M
+    cost: 2
+    deps: [gsap-scrolltrigger]
+    technique: |
+      Container pinned with ScrollTrigger. Inner wrapper translates
+      horizontally based on scroll progress.
+
+  sticky-stack:
+    description: Cards stack on top of each other as you scroll
+    complexity: M
+    cost: 2
+    deps: [gsap-scrolltrigger]
+    technique: |
+      Each card has position: sticky with increasing top offset.
+      Optional scale-down and opacity reduction for stacked cards.
+
+  zoom-tunnel:
+    description: Camera zooms into content on scroll
+    complexity: H
+    cost: 3
+    deps: [gsap-scrolltrigger, three-js]
+    technique: |
+      Either CSS perspective + scale transform, or Three.js
+      camera dolly driven by scroll position.
+
+  progress-driven:
+    description: Animation tied directly to scroll percentage
+    complexity: L
+    cost: 1
+    deps: [css-scroll-timeline]
+    technique: |
+      CSS animation-timeline: scroll(). Pure CSS, runs off
+      main thread. Progress bars, fill effects, rotation.
+
+  # --- Text Animation ---
+
+  text-reveal:
+    description: Headline text animates in character by character or word by word
+    complexity: M
+    cost: 1
+    deps: [gsap, gsap-splittext]
+    technique: |
+      GSAP SplitText splits into chars/words/lines.
+      Staggered timeline with clip-path or translateY reveal.
+    defaults:
+      split: word
+      stagger: 80ms
+      duration: 800ms
+      easing: dramatic
+      direction: bottom  # bottom, top, left, right, fade
+
+  # --- Hover/Interaction ---
+
+  hover-lift:
+    description: Cards rise with enhanced shadow on hover
+    complexity: L
+    cost: 1
+    deps: [css]
+    technique: |
+      transition on transform + box-shadow.
+      translateY(-4px) + deeper shadow on :hover.
+    defaults:
+      lift: -4px
+      duration: 200ms
+      easing: standard
+
+  magnetic-cursor:
+    description: Buttons/links subtly move toward cursor on proximity
+    complexity: M
+    cost: 1
+    deps: [gsap]
+    technique: |
+      JS mousemove listener calculates distance from element center.
+      GSAP quickTo for smooth interpolation. Resets on mouseleave.
+    defaults:
+      strength: 0.3
+      radius: 100px
+
+  cursor-spotlight:
+    description: Radial gradient follows cursor position
+    complexity: L
+    cost: 1
+    deps: [js, css]
+    technique: |
+      JS mousemove updates CSS custom properties (--mx, --my).
+      CSS radial-gradient uses var(--mx) var(--my) for position.
+
+  # --- Background Effects ---
+
+  gradient-morph:
+    description: Animated gradient that shifts hues and positions
+    complexity: L
+    cost: 1
+    deps: [css]
+    technique: |
+      CSS @property for animatable gradient stops.
+      @keyframes shift hue and position values.
+
+  grain-noise:
+    description: Film grain texture overlay
+    complexity: L
+    cost: 1
+    deps: [css, svg-filter]
+    technique: |
+      SVG feTurbulence filter (fractalNoise, baseFrequency 0.65).
+      Applied as pseudo-element with mix-blend-mode.
+      For performance, pre-render to static WebP if animated grain causes issues.
+
+  shader-background:
+    description: WebGL fragment shader as page background
+    complexity: H
+    cost: 3-4
+    deps: [three-js, glsl]
+    technique: |
+      Three.js fullscreen quad with custom ShaderMaterial.
+      GLSL fragment shader for noise, flow fields, etc.
+      Uniforms: u_time, u_resolution, u_mouse.
+
+  particle-field:
+    description: Floating particles that respond to cursor
+    complexity: H
+    cost: 3
+    deps: [three-js]
+    technique: |
+      Three.js Points or InstancedMesh. Vertex shader positions
+      particles. Fragment shader colors them. Cursor repulsion
+      via uniform.
+
+  # --- Page-Level ---
+
+  smooth-scroll:
+    description: Smooth momentum scrolling
+    complexity: L
+    cost: 1
+    deps: [lenis]
+    technique: |
+      Lenis initialization with default config. Does not break
+      position: sticky or IntersectionObserver.
+    defaults:
+      duration: 1.2
+      easing: "t => Math.min(1, 1.001 - Math.pow(2, -10 * t))"
+
+  page-transition:
+    description: Animated transition between pages
+    complexity: L-M
+    cost: 1
+    deps: [view-transitions-api]
+    technique: |
+      CSS-only via View Transitions API for crossfade/slide.
+      More complex transitions (curtain, morph) need JS orchestration.

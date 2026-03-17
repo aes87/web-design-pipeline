@@ -1,0 +1,19 @@
+{
+  "name": "web-design-pipeline",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Claude Code-native pipeline for generating award-quality web pages from design briefs",
+  "scripts": {
+    "validate": "node bin/validate.js",
+    "serve": "node lib/server.js",
+    "test": "npx playwright test",
+    "test:screenshots": "xvfb-run npx playwright test --project=screenshots"
+  },
+  "devDependencies": {
+    "playwright": "^1.58",
+    "@axe-core/playwright": "^4.10",
+    "pixelmatch": "^6.0",
+    "pngjs": "^7.0",
+    "svgo": "^4.0"
+  }
+}

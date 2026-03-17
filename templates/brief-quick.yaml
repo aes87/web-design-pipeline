@@ -1,0 +1,24 @@
+# Quick Design Brief (Tier 1)
+# Provide style keywords and content. Claude infers everything else.
+
+aesthetic:
+  style: []                              # 1-3 keywords from vocabulary/aesthetics.yaml
+  mood: []                               # Adjectives for the feel
+
+color:
+  approach: generate                     # Let Claude derive the palette
+
+motion:
+  level: full                            # full, reduced, none
+  patterns: []                           # From vocabulary/motion.yaml
+
+pages:
+  - id: home
+    sections: []
+    # - type: hero
+    #   variant: animated-text-reveal
+    #   content:
+    #     headline: ""
+
+constraints:
+  output: single-file-html

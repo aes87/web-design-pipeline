@@ -1,0 +1,145 @@
+# Aesthetic Vocabulary
+# Each keyword maps to implied design decisions that Claude uses
+# when the brief doesn't specify explicit values.
+
+keywords:
+
+  brutalist:
+    description: Raw, confident, intentionally unpolished
+    colors: High contrast, monochrome or limited saturated palette
+    motion: Minimal, abrupt transitions, no easing
+    layout: Asymmetric, overlapping elements, visible grid structure
+    typography: Monospace or heavy slab-serif, extreme size contrasts
+    borders: Thick (2-4px+), hard drop shadows offset 4-8px
+    radius: None (sharp corners)
+
+  dark-luxury:
+    description: Sophisticated, premium, restrained elegance
+    colors: Deep blacks (#0a0a0a not #000), gold/cream/silver accents, subtle warm undertones
+    motion: Smooth, slow, dramatic easing (power3.out), generous durations
+    layout: Generous whitespace, centered compositions, breathing room
+    typography: Elegant serif or geometric sans-serif, thin weights, wide tracking on overlines
+    borders: Subtle, low-opacity borders or none
+    radius: Small (0.25rem) or none
+
+  glassmorphism:
+    description: Translucent, layered, depth through blur
+    colors: Translucent whites/darks, backdrop-blur layers, subtle color tints
+    motion: Smooth, layered parallax, floating elements
+    layout: Overlapping cards with depth, z-index stacking
+    typography: Clean sans-serif, medium weights
+    borders: 1px semi-transparent borders on glass panels
+    radius: Medium to large (0.75rem - 1.5rem)
+    effects: backdrop-filter blur (8-40px), subtle inner shadows
+
+  editorial:
+    description: Magazine-inspired, typography-driven, sophisticated layout
+    colors: Limited palette (2-3 colors), often b&w with single accent
+    motion: Scroll-driven reveals, text entrance animations, purposeful
+    layout: Magazine grid, asymmetric columns, strong vertical rhythm
+    typography: Strong serif/sans pairing, dramatic size hierarchy, pull quotes
+    borders: Minimal, hairline rules between sections
+    radius: None to small
+
+  organic:
+    description: Natural, flowing, earth-connected
+    colors: Earth tones, muted greens, terracotta, warm neutrals
+    motion: Gentle, flowing, ease-in-out curves, blob morphing
+    layout: Curved containers, fluid shapes, rounded sections
+    typography: Humanist sans-serif or rounded typefaces
+    borders: Soft, organic
+    radius: Large (1rem+), pill shapes
+
+  cyberpunk:
+    description: Neon-lit, high-tech, dystopian edge
+    colors: Neon on dark (cyan, magenta, green on near-black), RGB split effects
+    motion: Glitch effects, scan-lines, fast cuts, data-stream animations
+    layout: Dense, information-heavy, HUD-inspired
+    typography: Monospace, condensed sans-serif, terminal aesthetic
+    borders: Sharp, neon-glow borders
+    radius: None (hard edges)
+    effects: CRT scan-lines, glitch distortion, chromatic aberration
+
+  swiss:
+    description: Systematic, grid-perfect, International Typographic Style
+    colors: Clean, systematic, often black/white with one accent
+    motion: Functional, subtle, precise timing
+    layout: Strict grid alignment, mathematical proportions
+    typography: Helvetica-like (Neue Haas Grotesk, Inter), systematic scale
+    borders: Minimal, structural rules
+    radius: None
+
+  japanese-minimalism:
+    description: Zen-like, extreme restraint, ma (negative space)
+    colors: Muted, natural, predominantly white/cream with ink-like accents
+    motion: Subtle, contemplative, slow reveals
+    layout: Extreme whitespace, asymmetric balance, vertical rhythm
+    typography: Thin, delicate, often mixed with CJK-inspired spacing
+    borders: Hairline or none
+    radius: None to subtle
+
+  retro-futurism:
+    description: Past vision of the future, chrome and warmth
+    colors: Warm darks, chrome/silver, gradient metallics, sunset tones
+    motion: Smooth with retro easing, wipe transitions
+    layout: Centered, symmetrical, arched shapes
+    typography: Geometric display faces, wide proportions, heavy weights
+    borders: Double-line or art-deco styled
+    radius: Medium, often symmetrical
+
+  minimalist:
+    description: Less is more, essential elements only
+    colors: Monochrome or very limited (1-2 colors)
+    motion: Reduced, functional only, no decoration
+    layout: Single-column, maximum whitespace, few elements
+    typography: One typeface, limited weights, generous line-height
+    borders: None or hairline
+    radius: Consistent (pick one and use everywhere)
+
+  maximalist:
+    description: More is more, rich and layered
+    colors: Saturated, many colors, bold combinations
+    motion: Energetic, layered, overlapping animations
+    layout: Dense, overlapping, collage-like, horror vacui
+    typography: Mixed typefaces, decorative, varied sizes
+    borders: Decorative, patterned
+    radius: Mixed
+
+  immersive:
+    description: Full-screen experience, environmental, narrative
+    colors: Contextual (matches the "world" being built)
+    motion: Scroll-driven narrative, cinematic pacing, 3D camera movement
+    layout: Full-bleed sections, no visible chrome, edge-to-edge
+    typography: Integrated into the environment, not floating above it
+    borders: None (borderless, immersive)
+    radius: None
+    effects: WebGL backgrounds, shader effects, particle systems
+
+  vaporwave:
+    description: 80s/90s nostalgia, digital surrealism
+    colors: Pink, purple, cyan, chrome, gradient-heavy
+    motion: Slow, dreamlike, floating elements
+    layout: Centered, symmetrical, classical columns
+    typography: Bold sans-serif, sometimes serif for contrast
+    borders: Gradient borders, neon glow
+    radius: None to medium
+    effects: Grid perspective, sunset gradients, chrome reflections
+
+  corporate-clean:
+    description: Professional, trustworthy, conventional
+    colors: Blues, grays, whites, one accent color
+    motion: Subtle, professional, fast transitions
+    layout: Standard grid, card-based, conventional hierarchy
+    typography: System sans-serif, clear hierarchy, readable
+    borders: Light gray, structural
+    radius: Small to medium (0.25rem - 0.5rem)
+
+  handcrafted:
+    description: Personal, artisanal, human touch
+    colors: Warm, muted, paper-like backgrounds
+    motion: Subtle wobble, hand-drawn line animations
+    layout: Organic, slightly imperfect alignment
+    typography: Hand-drawn, script, or quirky display faces
+    borders: Sketched, uneven
+    radius: Organic, varied
+    effects: Paper texture, stamp effects, hand-drawn illustrations
