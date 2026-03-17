@@ -6,8 +6,8 @@
   "scripts": {
     "validate": "node bin/validate.js",
     "serve": "node lib/server.js",
-    "test": "npx playwright test",
-    "test:screenshots": "xvfb-run npx playwright test --project=screenshots"
+    "test": "node --test tests/lib.test.js",
+    "test:visual": "xvfb-run npx playwright test --project=screenshots"
   },
   "devDependencies": {
     "playwright": "^1.58",
