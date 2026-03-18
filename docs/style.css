@@ -664,6 +664,12 @@ body:hover .cursor-spotlight {
   margin-bottom: var(--space-lg);
 }
 
+.bento__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+}
+
 .bento__link {
   display: inline-flex;
   align-items: center;
@@ -672,6 +678,10 @@ body:hover .cursor-spotlight {
   font-weight: var(--font-weight-medium);
   color: var(--color-accent-primary);
   transition: gap var(--duration-hover) var(--ease-dramatic);
+}
+
+.bento__link--secondary {
+  color: var(--color-accent-secondary);
 }
 
 .bento__link:hover,
