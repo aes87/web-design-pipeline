@@ -384,6 +384,21 @@ Check for:
 - Responsive behavior (does tablet layout adapt? Is mobile single-column?)
 - Animation initial states (are elements visible that should be? Hidden that should be hidden?)
 
+### Visual Regression Between Iterations
+
+For comparing iterations beyond simple pixel matching, the pipeline supports intelligent visual comparison:
+
+**Playwright built-in (default)**: `toHaveScreenshot()` uses pixelmatch for pixel-level comparison. Sufficient for most validation.
+
+**Percy (optional)**: For AI-generated designs where rendering varies between iterations, Percy's AI-based diffing understands "visual similarity" rather than demanding pixel-perfect matches. Useful when acceptable variations (anti-aliasing, font rendering) cause false positives with pixelmatch.
+
+To enable Percy comparison between iterations:
+1. Set `PERCY_TOKEN` environment variable
+2. Run `npx percy snapshot designs/<name>/output/screenshots/`
+3. Percy's Visual AI flags only meaningful changes, ignoring rendering noise
+
+This is optional — the default pixelmatch workflow is sufficient for the iteration loop. Percy adds value when fine-tuning visual quality across many iterations.
+
 ### Step 8: Fix and iterate
 
 If validation fails OR screenshots reveal issues:
@@ -408,6 +423,19 @@ If validation fails OR screenshots reveal issues:
 Do NOT try to get everything perfect in iteration 1. Get structure right first, then refine.
 
 ## Mandatory conventions
+
+### Design Constitution (non-negotiable)
+
+These rules prevent LLM-generated CSS from drifting into generic "AI slop" — averaging all designs worldwide rather than implementing the specific brief's design system.
+
+- You are **FORBIDDEN** from using raw color values (`hex`, `rgb()`, `hsl()`, `oklch()` literals) in component styles. Every color MUST reference a CSS custom property from the `:root` token block (e.g., `var(--color-bg-base)`).
+- You are **FORBIDDEN** from using raw spacing or sizing values (`px`, `rem`, `em` literals) in component styles. Every spacing and sizing value MUST reference a CSS custom property (e.g., `var(--spacing-md)`). **Exceptions**: `0`, `100%`, `50%`, `auto`, and values inside `clamp()`/`calc()` expressions that themselves reference custom properties.
+- You are **FORBIDDEN** from using raw `font-family`, `font-size`, `font-weight`, or timing/easing values in component styles. All MUST reference custom properties (e.g., `var(--font-family-heading)`, `var(--font-size-lg)`, `var(--motion-duration-base)`, `var(--motion-easing-standard)`).
+- The **ONLY** places raw values are permitted are:
+  1. The `:root` token block (where custom properties are defined)
+  2. `@keyframes` definitions (percentage stops and transform values)
+- If a needed token does not exist, **ADD** it to the `:root` token block — never use a raw value inline as a shortcut.
+- During every iteration, audit your CSS for raw value leaks. If you find any raw color, spacing, font, or timing value outside `:root` or `@keyframes`, replace it with a custom property reference immediately.
 
 ### Accessibility (non-negotiable)
 - Skip link to `#main-content` at top of page
@@ -444,6 +472,8 @@ Do NOT try to get everything perfect in iteration 1. Get structure right first, 
 - Logical properties where appropriate (`margin-inline`, `padding-block`)
 
 ### Animation stack — CDN URLs
+
+**Note**: All GSAP plugins are 100% free since v3.13 (Webflow acquisition, May 2025). No registration or license key required.
 Use these exact CDN URLs:
 
 ```html
@@ -458,6 +488,30 @@ Use these exact CDN URLs:
 
 <!-- GSAP SplitText (only if text-reveal pattern is used) -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+
+<!-- GSAP MorphSVG (only if SVG morphing animations are in the brief) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/MorphSVGPlugin.min.js"></script>
+
+<!-- GSAP DrawSVG (only if SVG path drawing animations are in the brief) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/DrawSVGPlugin.min.js"></script>
+
+<!-- GSAP Flip (only if layout transition animations are in the brief) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/Flip.min.js"></script>
+
+<!-- GSAP ScrollSmoother (alternative to Lenis for smooth scroll within GSAP ecosystem) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollSmoother.min.js"></script>
+
+<!-- GSAP Inertia (only if momentum/velocity-based interactions are needed) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/InertiaPlugin.min.js"></script>
+
+<!-- GSAP ScrambleText (only if text scramble/decode animation is in the brief) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrambleTextPlugin.min.js"></script>
+
+<!-- GSAP Observer (for unified input detection: touch, scroll, pointer) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/Observer.min.js"></script>
+
+<!-- GSAP Draggable (only if drag interactions are needed) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/Draggable.min.js"></script>
 
 <!-- Three.js (only if shader-background, particle-field, 3d-scene, or zoom-tunnel is used) -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.170/build/three.min.js"></script>
@@ -490,3 +544,28 @@ When done, return a brief summary to the orchestrator:
 - **Brief deviations**: any departures from the brief with rationale
 - **Screenshot observations**: key visual notes from the final screenshots
 - **Files written**: `tokens.json`, `index.html`, `style.css`, `script.js`, `output/generation-report.json`
+
+## Agent Teams Migration (Future)
+
+When Claude Code Agent Teams reaches stable (currently experimental in v2.1.32+), this agent should migrate from a subagent to a teammate:
+
+### Benefits of Teammate Architecture
+- **Direct messaging**: Generator can message the brief-writer for clarification without going through the orchestrator
+- **Shared task list**: All agents see the design's progress status
+- **`TeammateIdle` hooks**: Validation can auto-trigger when the generator signals it has finished a pass
+- **`TaskCompleted` hooks**: Quality gates enforce validation before marking a generation step complete
+
+### Migration Checklist
+- [ ] Convert `.claude/agents/generator.md` frontmatter to teammate format
+- [ ] Add `team` configuration to main conversation
+- [ ] Define shared task list schema for design generation steps
+- [ ] Add `TeammateIdle` hook that triggers `node bin/validate.js` when generator completes a pass
+- [ ] Add `TaskCompleted` hook that gates the shipper on validation pass
+- [ ] Test inter-agent messaging: generator asks brief-writer about ambiguous brief sections
+- [ ] Verify token cost is acceptable (expect 3-4x a single session for 3-teammate team)
+
+### Constraints
+- No session resumption for in-process teammates (one session per generation)
+- One team per session
+- No nested teams
+- Teammates spawn within 20-30 seconds

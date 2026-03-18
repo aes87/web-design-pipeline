@@ -1,79 +1,304 @@
-# Typography Animation Patterns
+# Typography Animation
 
-Text animation techniques for headlines, body copy reveals, and kinetic typography. Typography animation is the single most impactful technique in award-winning web design — it transforms static text into a narrative device.
+Typography is the primary visual element in most award-winning web designs. Animated text is not decoration -- it is the hero. The way text enters, transforms, and responds to interaction communicates brand personality more than any other element.
+
+GSAP SplitText is the primary tool. It splits HTML text into individual spans (per character, word, or line) without breaking semantics, then those spans become individually animatable targets. CSS `clip-path`, `@property`, and variable font features provide complementary techniques.
+
+### Shared CSS Contract
+
+```
+--font-display           Display/headline typeface (must be loaded before splitting)
+--font-size-display      Display text size (clamp responsive)
+--font-weight-display    Display text weight
+--line-height-display    Display text line-height (1.0-1.2 for large text)
+--letter-spacing-display Letter spacing
+--color-fg-hero          Text color
+--color-accent           Accent/gradient color
+--ease-dramatic          Slow expressive easing (power3.out / cubic-bezier(0.16, 1, 0.3, 1))
+--ease-entrance          Standard entrance (power2.out)
+--duration-reveal        Per-unit reveal duration (0.6-1.0s)
+--stagger-char           Per-character stagger (0.02-0.04s)
+--stagger-word           Per-word stagger (0.06-0.1s)
+--stagger-line           Per-line stagger (0.1-0.15s)
+```
+
+### Font Loading Requirement
+
+SplitText calculates line breaks based on rendered dimensions. Splitting before fonts load produces incorrect line breaks. Always wait:
+
+```javascript
+document.fonts.ready.then(() => {
+  initTextAnimations();
+});
+```
+
+Or use `document.fonts.load('1em "Display Font"').then(...)` for specific fonts.
+
+### SplitText Basics
+
+```javascript
+const split = new SplitText('.hero__headline', {
+  type: 'words,chars',  // 'chars', 'words', 'lines', or combinations
+  charsClass: 'char',
+  wordsClass: 'word',
+  linesClass: 'line',
+  mask: 'lines',         // built-in overflow:hidden mask on line wrappers
+});
+
+// Animate
+gsap.from(split.words, {
+  y: '100%',
+  opacity: 0,
+  stagger: 0.08,
+  duration: 0.8,
+  ease: 'power3.out',
+});
+
+// Cleanup on page leave or resize
+split.revert(); // restores original HTML
+```
+
+### SplitText v3.13 Features (Rewrite)
+
+SplitText was completely rewritten in GSAP v3.13 with ~14 new features and 50% smaller file size (~7KB):
+
+**`autoSplit: true`**: Uses `ResizeObserver` + `document.fonts` to automatically revert and re-split when fonts load or the container resizes. Replaces the manual "Responsive Re-Split" pattern above:
+
+```javascript
+// Old approach: manual resize handler
+// New approach: autoSplit handles everything
+const split = new SplitText('.hero__headline', {
+  type: 'words,chars',
+  mask: 'lines',
+  autoSplit: true, // auto re-splits on resize and font load
+});
+```
+
+**`deepSlice`**: Correctly handles nested elements (`<strong>`, `<em>`, `<a>`) that span multiple lines by cloning and restructuring DOM. No more broken nested tags when splitting by lines.
+
+**`Intl.Segmenter()`**: Correct splitting of complex emojis and international text (CJK, Arabic, Devanagari). Replaces the broken `.split("")` approach.
+
+**Built-in masking**: The `mask` option adds overflow-hidden wrappers automatically for clean reveal effects without manual wrapper divs:
+```javascript
+const split = new SplitText('.headline', {
+  type: 'words',
+  mask: 'words', // each word gets overflow:hidden wrapper
+});
+// Words sliding up from below the mask line — clean reveal
+gsap.from(split.words, { y: '100%', stagger: 0.08, duration: 0.8 });
+```
+
+**Screen reader accessibility**: Automatic ARIA attributes ensure split text remains accessible.
+
+**Standalone usage**: SplitText can work independently from GSAP core for text splitting without animation.
+
+### Responsive Re-Split
+
+Line breaks change at different viewport widths. Re-split on resize:
+
+```javascript
+let split;
+function initSplit() {
+  if (split) split.revert();
+  split = new SplitText('.hero__headline', { type: 'lines', mask: 'lines' });
+  gsap.from(split.lines, { y: '100%', stagger: 0.1, duration: 0.8, ease: 'power3.out' });
+}
+
+// Debounced resize handler
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(initSplit, 300);
+});
+
+document.fonts.ready.then(initSplit);
+```
+
+### Shared Accessibility Rules
+
+- SplitText preserves the original text content in the DOM. Screen readers read the text normally -- the wrapping spans are invisible to assistive technology.
+- `prefers-reduced-motion: reduce`: Skip SplitText entirely. Show text at full opacity in its final position. No animation.
+- Do not split more than ~500 characters simultaneously. Beyond that, DOM overhead and animation performance degrade.
+- Text must be readable in source order without JavaScript. The unsplit text is the fallback.
 
 ---
 
-## Split Text Reveal (GSAP SplitText)
+## Character Reveal (Stagger Chars)
 
 **Complexity**: M
 **Performance cost**: 1
 **Dependencies**: gsap + gsap-splittext
 
 ### Description
-Text is split into characters, words, or lines, then each piece animates in with staggered timing. The core technique behind most award-winning text animations.
 
-### Split Modes
+Each character animates individually with a stagger, creating a typewriter-like or cascading entrance. The most granular text animation -- use for short headlines (under 30 characters) where the individual character motion adds emphasis.
 
-**Character split** — Most dramatic. Best for short headlines (1-5 words).
+### Animation Choreography
+
+**Slide-up from below** (masked):
 ```javascript
-const split = new SplitText('.hero__headline', { type: 'chars' });
+const split = new SplitText('.headline', { type: 'chars', mask: 'chars' });
 gsap.from(split.chars, {
-  y: 40,
-  opacity: 0,
-  duration: 0.6,
+  y: '100%',
   stagger: 0.03,
+  duration: 0.6,
   ease: 'power3.out',
 });
 ```
 
-**Word split** — Balanced impact and readability. Best for headlines (5-15 words).
+**Fade + blur**:
 ```javascript
-const split = new SplitText('.hero__headline', { type: 'words' });
-gsap.from(split.words, {
-  y: 30,
+const split = new SplitText('.headline', { type: 'chars' });
+gsap.from(split.chars, {
   opacity: 0,
-  duration: 0.8,
-  stagger: 0.06,
+  filter: 'blur(10px)',
+  stagger: 0.03,
+  duration: 0.5,
   ease: 'power2.out',
 });
 ```
 
-**Line split** — Subtle, elegant. Best for paragraphs and longer text.
+**Scale bounce**:
 ```javascript
-const split = new SplitText('.intro__text', { type: 'lines' });
-gsap.from(split.lines, {
+const split = new SplitText('.headline', { type: 'chars' });
+gsap.from(split.chars, {
+  scale: 0,
+  stagger: 0.04,
+  duration: 0.6,
+  ease: 'elastic.out(1, 0.5)',
+});
+```
+
+**Rotation from below**:
+```javascript
+const split = new SplitText('.headline', { type: 'chars' });
+gsap.from(split.chars, {
+  rotationX: -90,
   y: 20,
   opacity: 0,
-  duration: 0.6,
-  stagger: 0.1,
-  ease: 'power2.out',
+  stagger: 0.03,
+  duration: 0.8,
+  ease: 'power3.out',
+  transformOrigin: 'bottom center',
 });
 ```
-
-### HTML Structure
-```html
-<h1 class="hero__headline" data-split="words">
-  Design is how it works.
-</h1>
-```
-
-SplitText wraps each unit in a `<div>` with inline styles. The original text is preserved for screen readers.
 
 ### Timing by Aesthetic
 
-| Aesthetic | Split | Stagger | Duration | Ease |
-|-----------|-------|---------|----------|------|
-| dark-luxury | words | 80ms | 0.8s | power3.out |
-| editorial | lines | 100ms | 0.6s | power2.out |
-| brutalist | chars | 20ms | 0.3s | none (linear) |
-| japanese-minimalism | words | 120ms | 1.0s | power2.out |
-| cyberpunk | chars | 15ms | 0.2s | power1.out |
+| Aesthetic | Stagger | Duration | Ease | Style |
+|-----------|---------|----------|------|-------|
+| `dark-luxury` | 0.04s | 0.8s | `power3.out` | Slide-up, masked |
+| `cyberpunk` | 0.02s | 0.4s | `power1.out` | Fade+blur, fast |
+| `editorial` | 0.05s | 1.0s | `power2.out` | Slide-up, slow |
+| `organic` | 0.04s | 0.7s | `elastic.out(1, 0.5)` | Scale bounce |
+| `brutalist` | 0.02s | 0.3s | `none` (linear) | Hard cut, no ease |
+| `japanese-minimalism` | 0.06s | 1.2s | `power2.inOut` | Fade only, very slow |
 
-### Accessibility
-- SplitText preserves the original text in the DOM — screen readers read it normally
-- `prefers-reduced-motion`: skip the staggered animation, fade the whole element in at once
-- Never split text that users need to read quickly (error messages, warnings)
+### Implementation Notes
+
+- Cap stagger formula: `stagger = min(0.04, 1.5 / charCount)`. For 50 characters at 0.03s stagger, total time is 1.5s -- any longer feels sluggish.
+- Character animations look best with monospace or geometric sans-serif fonts where each character has consistent width.
+- For long text, split by words instead. Character-level animation on body paragraphs is excessive.
+
+---
+
+## Word Reveal (Stagger Words)
+
+**Complexity**: M
+**Performance cost**: 1
+**Dependencies**: gsap + gsap-splittext
+
+### Description
+
+Words animate as units with stagger. The default and most versatile text animation -- works for any headline length. Reads naturally because words are the cognitive unit humans process.
+
+### Animation Choreography
+
+**Slide-up with mask** (most common award-winning pattern):
+```javascript
+const split = new SplitText('.headline', { type: 'words', mask: 'words' });
+gsap.from(split.words, {
+  y: '100%',
+  stagger: 0.08,
+  duration: 0.8,
+  ease: 'power3.out',
+});
+```
+
+The `mask: 'words'` option adds `overflow: hidden` wrappers around each word automatically. Words slide up from below the mask line, creating a clean reveal without visible translation from off-screen.
+
+**Fade + translateY** (softer entrance):
+```javascript
+const split = new SplitText('.headline', { type: 'words' });
+gsap.from(split.words, {
+  y: 30,
+  opacity: 0,
+  stagger: 0.08,
+  duration: 0.6,
+  ease: 'power2.out',
+});
+```
+
+### Timing by Aesthetic
+
+| Aesthetic | Stagger | Duration | Ease | Style |
+|-----------|---------|----------|------|-------|
+| `dark-luxury` | 0.1s | 1.0s | `power3.out` | Masked slide-up |
+| `editorial` | 0.08s | 0.8s | `power3.out` | Masked slide-up |
+| `minimalist` | 0.12s | 0.6s | `power2.out` | Simple fade |
+| `corporate-clean` | 0.06s | 0.5s | `power2.out` | Fade + translateY |
+| `immersive` | 0.15s | 1.2s | `power3.out` | Masked slide-up, slow |
+
+### Implementation Notes
+
+- Word-level is the sweet spot for most use cases. It reads naturally and works for headlines of any length (5-20 words).
+- The masked slide-up is the single most iconic animation pattern in award-winning web design. If only one text animation is used, this is it.
+- Combine with scroll-trigger for below-fold headings: trigger on viewport entry, play once.
+
+---
+
+## Line Reveal (Stagger Lines)
+
+**Complexity**: M
+**Performance cost**: 1
+**Dependencies**: gsap + gsap-splittext
+
+### Description
+
+Text splits into lines (based on actual rendered line breaks), and each line animates as a unit. Best for multi-line paragraphs or headlines where word-level stagger would be too granular.
+
+### Animation Choreography
+
+**Masked slide-up per line**:
+```javascript
+const split = new SplitText('.headline', { type: 'lines', mask: 'lines' });
+gsap.from(split.lines, {
+  y: '100%',
+  stagger: 0.12,
+  duration: 0.8,
+  ease: 'power3.out',
+});
+```
+
+**Fade + rotate per line** (editorial feel):
+```javascript
+const split = new SplitText('.text-block', { type: 'lines' });
+gsap.from(split.lines, {
+  opacity: 0,
+  y: 20,
+  rotateZ: 1, // subtle tilt
+  stagger: 0.1,
+  duration: 0.7,
+  ease: 'power2.out',
+});
+```
+
+### Implementation Notes
+
+- Line detection depends on the rendered layout -- different viewport widths produce different line breaks. Always re-split on resize.
+- `mask: 'lines'` creates overflow-hidden wrappers per line for clean slide-up reveals.
+- Line-level works well for body text and longer paragraphs (where word-level stagger would take too long).
+- Combine: split `type: 'lines,words'`, animate lines first (stagger), then words within each line (smaller stagger).
 
 ---
 
@@ -81,119 +306,224 @@ SplitText wraps each unit in a `<div>` with inline styles. The original text is 
 
 **Complexity**: M
 **Performance cost**: 1
-**Dependencies**: gsap
+**Dependencies**: css | gsap
 
 ### Description
-Text reveals by animating `clip-path` on each line or word, creating a "wipe" effect where text slides into view from behind an invisible mask.
 
-### CSS + GSAP Implementation
+Text is revealed by animating a `clip-path` on the text container. A rectangular or custom-shaped mask wipes across the text, revealing it progressively. Unlike SplitText reveals, this keeps the text as a single element -- no splitting required.
+
+### CSS Implementation
+
 ```css
-.text-clip-reveal span {
-  display: inline-block;
+.clip-text {
   clip-path: inset(0 100% 0 0);
+  transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clip-text.is-visible {
+  clip-path: inset(0 0 0 0);
 }
 ```
 
+### GSAP Implementation
+
 ```javascript
-const split = new SplitText('.text-clip-reveal', { type: 'words' });
-// Wrap each word's div in a mask container for overflow clipping
-split.words.forEach(word => {
-  word.style.clipPath = 'inset(0 100% 0 0)';
-});
-
-gsap.to(split.words, {
-  clipPath: 'inset(0 0% 0 0)',
-  duration: 0.6,
-  stagger: 0.05,
-  ease: 'power3.out',
-});
-```
-
-### Variant: Translate + Clip
-Combine translateY with clip-path for text that slides up into view from below a baseline mask:
-```javascript
-gsap.from(split.lines, {
-  y: '100%',
-  clipPath: 'inset(100% 0 0 0)',
-  duration: 0.8,
-  stagger: 0.1,
-  ease: 'power3.out',
-});
-```
-
----
-
-## Blur-In Effect
-
-**Complexity**: M
-**Performance cost**: 2
-**Dependencies**: gsap
-
-### Description
-Text starts blurred and sharpens into focus. Creates a cinematic, dreamlike entrance.
-
-### Implementation
-```javascript
-gsap.from('.blur-reveal', {
-  filter: 'blur(12px)',
-  opacity: 0,
-  y: 20,
+gsap.from('.clip-text', {
+  clipPath: 'inset(0 100% 0 0)',
   duration: 1.2,
-  ease: 'power2.out',
+  ease: 'power3.inOut',
+  scrollTrigger: {
+    trigger: '.clip-text',
+    start: 'top 80%',
+  }
 });
 ```
 
-### Performance Notes
-- `filter: blur()` is GPU-accelerated but expensive during animation
-- Don't blur large blocks of text — use on headlines only
-- Animate `blur(12px)` → `blur(0px)`, not the reverse (browser can cache the sharp state)
-- `prefers-reduced-motion`: simple opacity fade, no blur
+### Variations
+
+| Clip direction | `clip-path` from | `clip-path` to |
+|---------------|------------------|----------------|
+| Left to right | `inset(0 100% 0 0)` | `inset(0 0 0 0)` |
+| Right to left | `inset(0 0 0 100%)` | `inset(0 0 0 0)` |
+| Top to bottom | `inset(0 0 100% 0)` | `inset(0 0 0 0)` |
+| Bottom to top | `inset(100% 0 0 0)` | `inset(0 0 0 0)` |
+| Center out | `inset(0 50% 0 50%)` | `inset(0 0 0 0)` |
+| Circle expand | `circle(0% at 50% 50%)` | `circle(100% at 50% 50%)` |
+
+### Timing Values
+
+- **Duration**: 0.8-1.2s
+- **Ease**: `power3.inOut` (smooth acceleration and deceleration)
+- **Delay**: often paired with a sequence (image wipes first, text follows)
+
+### Accessibility
+
+- `prefers-reduced-motion: reduce`: `clip-path: none`. Text visible immediately.
+
+### Implementation Notes
+
+- `clip-path` on text is GPU-accelerated in modern browsers and performs well.
+- This approach does not require SplitText -- it works on any element. Good for paragraphs, pull quotes, or any block of text.
+- Combine with a colored pseudo-element that wipes across first (curtain effect), then the clip-path reveals the text underneath.
 
 ---
 
 ## Variable Font Animation
 
-**Complexity**: M
-**Performance cost**: 1
-**Dependencies**: css OR gsap
+**Complexity**: H
+**Performance cost**: 2
+**Dependencies**: css + @property | gsap
 
 ### Description
-Animate variable font axes (weight, width, slant, optical size, custom axes) for smooth typographic morphing. Requires a variable font.
 
-### CSS Implementation (Weight Shift)
+Variable fonts have animatable axes: `font-weight` (wght), `font-width` (wdth), `font-stretch`, `font-style`, and custom axes. Animating these on hover, scroll, or during page entrance creates organic, living typography. Requires a variable font file.
+
+### CSS Implementation
+
 ```css
-@property --font-weight {
-  syntax: '<number>';
-  initial-value: 100;
+@property --font-wght {
+  syntax: "<number>";
   inherits: false;
+  initial-value: 400;
 }
 
-.weight-animate {
+.variable-text {
   font-family: 'Inter Variable', sans-serif;
-  font-variation-settings: 'wght' var(--font-weight);
-  transition: --font-weight 0.6s var(--ease-standard);
+  font-variation-settings: 'wght' var(--font-wght);
+  transition: --font-wght 0.6s var(--ease-standard);
 }
 
-.weight-animate:hover {
-  --font-weight: 900;
+.variable-text:hover {
+  --font-wght: 900;
 }
 ```
 
-### GSAP Implementation (Multi-Axis)
+### Scroll-Driven Weight Shift
+
+```css
+@keyframes weight-shift {
+  from { --font-wght: 100; }
+  to { --font-wght: 900; }
+}
+
+.variable-text {
+  font-variation-settings: 'wght' var(--font-wght);
+  animation: weight-shift linear both;
+  animation-timeline: view();
+  animation-range: entry 20% entry 80%;
+}
+```
+
+### Per-Character Variable Font Animation
+
 ```javascript
-gsap.to('.morph-text', {
-  fontVariationSettings: '"wght" 900, "wdth" 125',
-  duration: 1,
-  ease: 'power2.inOut',
+const split = new SplitText('.variable-headline', { type: 'chars' });
+
+// Weight wave: each character animates weight in a staggered wave
+split.chars.forEach((char, i) => {
+  gsap.to(char, {
+    fontWeight: 900,
+    duration: 1,
+    ease: 'power2.inOut',
+    yoyo: true,
+    repeat: -1,
+    delay: i * 0.1,
+  });
 });
 ```
 
-### Popular Variable Font Axes
-- `wght` — Weight (100-900)
-- `wdth` — Width (75-125)
-- `slnt` — Slant (-15 to 0)
-- `opsz` — Optical size (8-144)
-- `GRAD` — Grade (custom)
+### Cursor Proximity Weight
+
+```javascript
+const chars = document.querySelectorAll('.char');
+document.addEventListener('mousemove', (e) => {
+  chars.forEach(char => {
+    const rect = char.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dist = Math.sqrt((e.clientX - cx) ** 2 + (e.clientY - cy) ** 2);
+    const weight = gsap.utils.mapRange(0, 200, 900, 400, Math.min(dist, 200));
+    gsap.to(char, { fontWeight: weight, duration: 0.3, ease: 'power2.out' });
+  });
+});
+```
+
+### Timing by Aesthetic
+
+| Aesthetic | Axis | Animation | Notes |
+|-----------|------|-----------|-------|
+| `dark-luxury` | wght 300->700 | Slow entrance, 1.5s | Elegant weight shift |
+| `brutalist` | wght 100->900 | Instant, no transition | Dramatic toggle |
+| `organic` | wght + wdth | Wave, cursor proximity | Living, responsive feel |
+| `editorial` | wght 400->700 | Scroll-driven | Weight increases as you read |
+| `cyberpunk` | wght + slnt | Glitch-like rapid switching | Random axis values on interval |
+
+### Accessibility
+
+- `prefers-reduced-motion: reduce`: Show text at its final weight. No animation of font axes.
+- Variable font animations do not affect readability if the text settles at a legible weight.
+- Continuous wave animations should be optional (triggered by hover, not permanent).
+
+### Implementation Notes
+
+- **Font file required**: The font must be a variable font file (.woff2 with variation axes). Not all fonts have `wdth` or custom axes -- check the font documentation.
+- **`@property` required**: To animate `--font-wght` with CSS transitions, it must be registered via `@property`. Without registration, the transition snaps instead of interpolating.
+- **Performance**: `font-variation-settings` changes trigger text re-layout. Animating it on many elements simultaneously (like per-character cursor proximity) can be expensive. Use `will-change: contents` on the container.
+- **Common variable fonts for web**: Inter Variable, Roboto Flex, Source Sans Variable, Climate Crisis (experimental axes), Recursive.
+- Animate `font-weight` directly (not `font-variation-settings`) when only the weight axis is needed -- it is better supported and simpler.
+
+### Recommended Variable Fonts for Web (2025-2026)
+
+| Font | Axes | Style | Source |
+|------|------|-------|--------|
+| **Inter Variable** | wght (100-900) | Screen-optimized UI sans | Google Fonts |
+| **Roboto Flex** | wght, wdth, opsz, GRAD | Versatile sans, many axes | Google Fonts |
+| **Source Sans Variable** | wght, ital | Reliable body text sans | Google Fonts |
+| **Climate Crisis** | YEAR (experimental) | Display, year-based axis | Google Fonts |
+| **Recursive** | wght, slnt, CASL, CRSV, MONO | Mono/sans, 5 axes | Google Fonts |
+| **Fraunces** | wght, opsz, SOFT, WONK | Display serif, fun axes | Google Fonts |
+
+### Advanced: Multi-Axis Animation
+
+Animate multiple variable font axes simultaneously for expressive effects:
+
+```javascript
+// Combine weight + width + slant on scroll
+gsap.to('.multi-axis-text', {
+  fontWeight: 900,
+  fontStretch: '125%',
+  fontStyle: 'oblique 12deg',
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.multi-axis-section',
+    start: 'top center',
+    end: 'bottom center',
+    scrub: 1,
+  }
+});
+```
+
+### CSS Scroll-Driven Variable Font Animation
+
+```css
+@property --font-wght {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 400;
+}
+
+.scroll-weight-text {
+  font-variation-settings: 'wght' var(--font-wght);
+  animation: weight-scroll linear both;
+  animation-timeline: view();
+  animation-range: entry 20% entry 80%;
+}
+
+@keyframes weight-scroll {
+  from { --font-wght: 100; }
+  to { --font-wght: 900; }
+}
+```
 
 ---
 
@@ -201,67 +531,310 @@ gsap.to('.morph-text', {
 
 **Complexity**: H
 **Performance cost**: 2
-**Dependencies**: gsap + gsap-splittext
+**Dependencies**: gsap + gsap-splittext + gsap-scrolltrigger
 
 ### Description
-Large-scale text animation where characters have independent physics-like motion — bouncing, rotating, scaling, with overlapping timing. Used for immersive hero sections and brand statements.
 
-### Implementation Pattern
+Large display text that moves, transforms, and rearranges on scroll or interaction. Characters spread apart, rotate individually, follow curves, or rearrange into new layouts. This is the most expressive text animation, used for brand statements and immersive experiences.
+
+### Scroll-Driven Letter Spacing
+
 ```javascript
-const split = new SplitText('.kinetic-headline', { type: 'chars' });
-
-const tl = gsap.timeline({ defaults: { ease: 'elastic.out(1, 0.5)' } });
-
-tl.from(split.chars, {
-  y: gsap.utils.random(-100, 100, true), // random Y per char
-  rotation: gsap.utils.random(-30, 30, true),
-  scale: 0,
-  opacity: 0,
-  duration: 1.2,
-  stagger: {
-    each: 0.04,
-    from: 'center', // animate from center outward
-  },
+gsap.to('.kinetic-text', {
+  letterSpacing: '0.5em',
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.kinetic-section',
+    start: 'top center',
+    end: 'bottom center',
+    scrub: 1,
+  }
 });
 ```
 
-### Choreography Variants
+### Per-Character Rotation on Scroll
 
-**Cascade** — Characters fall in from top, one by one
 ```javascript
-gsap.from(split.chars, {
-  y: -80, opacity: 0, rotation: -10,
-  stagger: { each: 0.03, from: 'start' },
-  ease: 'bounce.out', duration: 0.8,
-});
-```
-
-**Scramble** — Characters randomize before settling (typewriter/decoder effect)
-```javascript
-gsap.from(split.chars, {
-  textContent: () => String.fromCharCode(Math.random() * 26 + 65),
-  duration: 0.5,
-  stagger: 0.03,
-  snap: { textContent: 1 },
-});
-// Or use GSAP's ScrambleText plugin for built-in scramble
-```
-
-**Wave** — Characters oscillate in a sine wave pattern
-```javascript
+const split = new SplitText('.kinetic-text', { type: 'chars' });
 split.chars.forEach((char, i) => {
-  gsap.from(char, {
-    y: Math.sin(i * 0.5) * 40,
-    opacity: 0,
-    duration: 0.6,
-    delay: i * 0.03,
-    ease: 'power2.out',
+  gsap.to(char, {
+    rotation: 360,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '.kinetic-section',
+      start: 'top center',
+      end: 'bottom center',
+      scrub: true,
+    }
   });
 });
 ```
 
+### Horizontal Scrolling Text Marquee
+
+```html
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span class="marquee__text">BRAND STATEMENT &mdash; </span>
+    <span class="marquee__text">BRAND STATEMENT &mdash; </span>
+    <span class="marquee__text">BRAND STATEMENT &mdash; </span>
+  </div>
+</div>
+```
+
+```css
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee__track {
+  display: inline-flex;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  to { transform: translateX(-33.33%); }
+}
+```
+
+The text is repeated 3x. The animation translates by -33.33% (one repetition), then loops -- creating the illusion of infinite scrolling.
+
+### Stroke/Fill Text
+
+```css
+.stroke-text {
+  -webkit-text-stroke: 2px var(--color-fg-hero);
+  color: transparent;
+  transition: color 0.8s var(--ease-dramatic);
+}
+
+.stroke-text.is-filled {
+  color: var(--color-fg-hero);
+}
+```
+
+Scroll-driven: animate from stroke-only to filled on scroll progress:
+
+```javascript
+gsap.to('.stroke-text', {
+  color: 'var(--color-fg-hero)',
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.stroke-text',
+    start: 'top 70%',
+    end: 'top 30%',
+    scrub: true,
+  }
+});
+```
+
+### Text Along a Path (SVG)
+
+```html
+<svg viewBox="0 0 800 200" class="path-text">
+  <path id="textPath" d="M 0 150 Q 200 50 400 150 Q 600 250 800 150" fill="none" />
+  <text>
+    <textPath href="#textPath" class="path-text__content">
+      Text that follows a curved path
+    </textPath>
+  </text>
+</svg>
+```
+
+Animate `startOffset` with GSAP to scroll text along the path:
+```javascript
+gsap.to('.path-text__content', {
+  attr: { startOffset: '100%' },
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.path-text',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 1,
+  }
+});
+```
+
+### Timing by Aesthetic
+
+| Aesthetic | Pattern | Notes |
+|-----------|---------|-------|
+| `dark-luxury` | Slow stroke-to-fill on scroll | Dramatic, reveals gradually |
+| `brutalist` | Per-char random rotation, no ease | Intentionally chaotic |
+| `editorial` | Marquee with serif typeface | Classic editorial device |
+| `immersive` | Full kinetic (letter-spacing + rotation on scroll) | Total text transformation |
+| `japanese-minimalism` | Minimal: slow fade with wide tracking | Restraint as expression |
+| `cyberpunk` | Glitch marquee with `font-variation-settings` jitter | Digital instability |
+
 ### Accessibility
-- Kinetic text must settle into a readable final state within 2 seconds
-- `prefers-reduced-motion`: show final state immediately, no character animation
-- Ensure the text is fully readable after animation completes (no residual transforms)
-- Never use kinetic typography for instructional or navigational text
+
+- `prefers-reduced-motion: reduce`: All kinetic text is static. Show at final state. Marquees stop.
+- Marquees: `aria-hidden="true"` if the text is repeated/decorative. If the marquee contains meaningful content, include a static version elsewhere in the DOM.
+- Kinetic text should enhance, not replace, readable content. The same message should be accessible without animation.
+
+### Implementation Notes
+
+- Kinetic typography is the most visually impactful but also the highest risk for overdoing it. One kinetic section per page is usually enough.
+- Large font sizes (80-200px+) are required for kinetic effects to read well. Small text in motion is just noise.
+- For marquees, use `will-change: transform` on the track. CSS animation is more efficient than GSAP for simple linear translation.
+- Stroke text (`-webkit-text-stroke`) has some cross-browser rendering differences. Test on Safari and Firefox.
+- Scroll-driven kinetic typography works best in the `immersive` aesthetic where the entire page is a narrative experience.
+
+---
+
+## Blur-In Effect
+
+**Complexity**: M
+**Performance cost**: 2
+**Dependencies**: gsap + gsap-splittext | css
+
+### Description
+
+Text materializes from a blurred state to sharp focus. Each word or character starts fully blurred and transparent, then resolves to clear, readable text. Creates a dreamlike entrance that works especially well with `dark-luxury`, `glassmorphism`, and `japanese-minimalism` aesthetics.
+
+### GSAP Implementation
+
+```javascript
+const split = new SplitText('.blur-headline', { type: 'words' });
+gsap.from(split.words, {
+  opacity: 0,
+  filter: 'blur(12px)',
+  stagger: 0.1,
+  duration: 0.8,
+  ease: 'power2.out',
+});
+```
+
+### CSS-Only Implementation
+
+```css
+.blur-text {
+  opacity: 0;
+  filter: blur(12px);
+  transition:
+    opacity 0.8s var(--ease-entrance),
+    filter 0.8s var(--ease-entrance);
+}
+
+.blur-text.is-visible {
+  opacity: 1;
+  filter: blur(0);
+}
+```
+
+For stagger without JS (limited):
+```css
+.blur-text span:nth-child(1) { transition-delay: 0ms; }
+.blur-text span:nth-child(2) { transition-delay: 80ms; }
+.blur-text span:nth-child(3) { transition-delay: 160ms; }
+/* ... */
+```
+
+### Timing Values
+
+| Aesthetic | Blur amount | Duration | Stagger | Ease |
+|-----------|------------|----------|---------|------|
+| `dark-luxury` | 12px | 1.0s | 0.12s | `power3.out` |
+| `glassmorphism` | 20px | 1.2s | 0.1s | `power2.out` |
+| `japanese-minimalism` | 8px | 1.5s | 0.15s | `power2.inOut` |
+| `editorial` | 6px | 0.6s | 0.08s | `power2.out` |
+| `cyberpunk` | 15px | 0.4s | 0.03s | `power1.out` |
+
+### Accessibility
+
+- `prefers-reduced-motion: reduce`: Text appears at full opacity and zero blur immediately. No transition.
+- The blur is purely decorative. Text in the DOM is always accessible to screen readers regardless of filter state.
+
+### Implementation Notes
+
+- `filter: blur()` is partially GPU-accelerated in modern browsers. Performance is acceptable for text elements but can be expensive on large images.
+- Blur amount: 8-15px is the sweet spot. Less than 5px is barely noticeable. More than 20px takes too long to resolve and feels sluggish.
+- Combine blur-in with translateY for a compound entrance: `filter: blur(12px); opacity: 0; y: 20` -> `filter: blur(0); opacity: 1; y: 0`.
+- The CSS-only version requires pre-split markup (each word in a `<span>`). SplitText automates this.
+- For `glassmorphism`, combine the blur-in text with a `backdrop-filter: blur()` container for a cohesive blurred-glass aesthetic.
+
+---
+
+## Text Scramble/Decode
+
+**Complexity**: M
+**Performance cost**: 1
+**Dependencies**: gsap (TextPlugin) | js
+
+### Description
+
+Characters start as random symbols and resolve to the correct text, letter by letter. Creates a "decoding" or "hacking" effect. Pairs well with `cyberpunk`, `retro-futurism`, and tech aesthetics.
+
+### GSAP TextPlugin Implementation
+
+```javascript
+gsap.to('.scramble-text', {
+  duration: 2,
+  text: {
+    value: 'The decoded message',
+    newClass: 'resolved',
+    delimiter: '',
+    speed: 0.5,
+    scrambleText: {
+      chars: '01!@#$%&*',
+      revealDelay: 0.5,
+      tweenLength: true,
+    }
+  },
+  ease: 'none',
+});
+```
+
+### Vanilla JS Implementation
+
+```javascript
+function scrambleText(element, finalText, duration = 2000) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
+  const frames = duration / 16; // ~60fps
+  const textLength = finalText.length;
+  let frame = 0;
+
+  const interval = setInterval(() => {
+    const progress = frame / frames;
+    const resolved = Math.floor(progress * textLength);
+
+    let display = '';
+    for (let i = 0; i < textLength; i++) {
+      if (i < resolved) {
+        display += finalText[i];
+      } else {
+        display += chars[Math.floor(Math.random() * chars.length)];
+      }
+    }
+
+    element.textContent = display;
+    frame++;
+
+    if (frame > frames) {
+      clearInterval(interval);
+      element.textContent = finalText;
+    }
+  }, 16);
+}
+```
+
+### Timing Values
+
+- **Total duration**: 1.5-3s (depends on text length)
+- **Character resolution**: left-to-right, 1-2 characters per 50ms
+- **Scramble character set**: match the aesthetic (`01` for cyberpunk, `!@#` for hacker, latin chars for editorial)
+- **Trigger**: on viewport entry or after a delay
+
+### Accessibility
+
+- `prefers-reduced-motion: reduce`: Show final text immediately. No scramble animation.
+- The element's `textContent` changes rapidly during animation. Add `aria-label` with the final text to prevent screen readers from reading intermediate states.
+- Alternatively, use a separate `sr-only` element with the final text and `aria-hidden="true"` on the animated element.
+
+### Implementation Notes
+
+- The GSAP TextPlugin `scrambleText` feature handles all the complexity (character replacement, reveal timing, delimiter handling). Prefer it over custom implementations.
+- Monospace fonts make the scramble effect more convincing because character widths do not change.
+- For proportional fonts, use `font-variant-numeric: tabular-nums` and keep scramble characters similar in width to the final characters.
+- The scramble effect works best on short text (headlines, numbers, labels). On long paragraphs, it is unreadable and annoying.

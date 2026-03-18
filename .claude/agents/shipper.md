@@ -95,6 +95,25 @@ mkdir -p docs/<name>/screenshots/
 cp designs/<name>/output/screenshots/*.png docs/<name>/screenshots/
 ```
 
+#### If `cloudflare-pages`:
+
+Deploy to Cloudflare Pages for preview URLs:
+
+```bash
+# Requires CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID env vars
+# Deploy as preview (branch-based)
+node -e "
+  import { deployCloudflare } from './lib/deploy.js';
+  const result = await deployCloudflare('designs/<name>', {
+    projectName: '<name>',
+    branch: 'preview',
+  });
+  console.log(JSON.stringify(result, null, 2));
+"
+```
+
+The deploy URL will be returned for design review. Share this URL with stakeholders for feedback.
+
 #### If `static-cdn` or `local`:
 
 Output stays in `designs/<name>/output/`. No additional copying needed.

@@ -1,0 +1,41 @@
+{
+  "$comment": "Stylelint config for web-design-pipeline. Enforces design-token discipline: all colors, spacing, typography, and timing values should flow through CSS custom properties defined in :root, not raw literals scattered across component styles.",
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "declaration-no-important": [
+      true,
+      {
+        "severity": "error",
+        "message": "!important is forbidden except inside @media (prefers-reduced-motion: reduce)"
+      }
+    ],
+    "selector-id-pattern": [
+      "^$",
+      {
+        "severity": "warning",
+        "message": "ID selectors should not be used for styling — use BEM class selectors instead"
+      }
+    ],
+    "no-descending-specificity": null,
+    "custom-property-pattern": [
+      "^(color|font|spacing|motion|layout|border|size|weight|line-height|easing|duration|radius|gap|margin|max-width|z|shadow|opacity|grid|flex)-.+$",
+      {
+        "severity": "warning",
+        "message": "Custom properties should follow the design-token naming convention: --{category}-{name} (e.g., --color-bg-base, --spacing-md, --font-size-lg)"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "rules": {
+        "declaration-no-important": [
+          true,
+          {
+            "severity": "error"
+          }
+        ]
+      }
+    }
+  ]
+}

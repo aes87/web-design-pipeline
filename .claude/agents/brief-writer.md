@@ -16,6 +16,7 @@ You will be given:
 - Optionally: reference URLs to analyze
 - Optionally: screenshot file paths to read visually
 - Optionally: an existing brief to revise (iteration)
+- Optionally: a Figma file URL to extract design variables from (via Figma MCP)
 
 ## Context you MUST read
 
@@ -50,6 +51,42 @@ If the user provides screenshot file paths, read each PNG/JPG visually using the
 - Any notable effects (gradients, shadows, textures, overlays)
 
 Document your analysis findings in `requirements.md`.
+
+### Figma Files (via MCP)
+
+If the user provides a Figma file URL and the Figma MCP server is configured:
+
+1. Use the Figma MCP `get_design_context` tool to extract:
+   - Design variables (colors, spacing, typography, corner radius)
+   - Component structure and naming
+   - Layout rules (auto layout, constraints)
+   - Grid configuration
+
+2. Use `get_variable_defs` to extract Figma Variables as design tokens:
+   ```
+   Figma Variables → DTCG token structure → brief.yaml color/typography/spacing sections
+   ```
+
+3. Map Figma Variables to brief sections:
+   - Color variables → `color.palette` in brief
+   - Typography variables → `typography.fonts` in brief
+   - Spacing variables → implicit in layout configuration
+   - Corner radius → `border.radius` tokens
+
+4. Use `get_screenshot` for visual reference analysis (same as Screenshots section above)
+
+**Requirements for good Figma-to-brief extraction:**
+- Figma file should use Auto Layout for predictable structure
+- Design Variables should be defined (not raw values)
+- Layers should be named meaningfully (not "Frame 427")
+- Components should be well-structured with variants
+
+**Note**: "AI does not fix messy foundations. It amplifies them." A well-organized Figma file produces a much better brief than a chaotic one.
+
+If the Figma MCP server is not configured, inform the user and suggest they either:
+1. Configure the Figma MCP server (see https://github.com/nicholasgriffintn/figma-mcp-server)
+2. Export their design tokens manually to a JSON file and provide that instead
+3. Describe their design intent in natural language (standard brief-writer flow)
 
 ## Your outputs
 
