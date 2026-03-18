@@ -1,0 +1,226 @@
+# ============================================================
+# WEB DESIGN BRIEF — Claude Portfolio
+# A portfolio page showcasing tools built with Claude Code
+# Tier: 2
+# ============================================================
+
+meta:
+  project: "claude-portfolio"
+  date: "2026-03-17"
+  tier: 2
+
+# ----------------------------------------------------------
+# AESTHETIC DIRECTION
+# ----------------------------------------------------------
+aesthetic:
+  style: [dark-luxury, editorial]
+  mood: [sophisticated, curious, whimsical, intelligent]
+  avoid: [corporate-clean, generic-tech, startup-template]
+
+# ----------------------------------------------------------
+# COLOR PALETTE
+# ----------------------------------------------------------
+color:
+  approach: specify
+  palette:
+    background:
+      base: "oklch(0.13 0.015 270)"
+      surface: "oklch(0.17 0.012 270)"
+      elevated: "oklch(0.21 0.01 270)"
+    foreground:
+      base: "oklch(0.93 0.01 90)"
+      muted: "oklch(0.60 0.02 270)"
+      subtle: "oklch(0.42 0.015 270)"
+    accent:
+      primary: "oklch(0.78 0.14 55)"
+      secondary: "oklch(0.72 0.12 165)"
+      glow: "oklch(0.78 0.14 55 / 0.15)"
+
+# ----------------------------------------------------------
+# TYPOGRAPHY
+# ----------------------------------------------------------
+typography:
+  loading: google-fonts
+  fonts:
+    heading:
+      family: "Playfair Display"
+      weight: "700"
+      fallback: "Georgia, serif"
+    body:
+      family: "Inter"
+      weight: "400"
+      fallback: "system-ui, sans-serif"
+    mono:
+      family: "JetBrains Mono"
+      weight: "400"
+      fallback: "monospace"
+  scale:
+    method: ratio
+    base_size: "1rem"
+    ratio: 1.333
+
+# ----------------------------------------------------------
+# LAYOUT
+# ----------------------------------------------------------
+layout:
+  philosophy: magazine
+  grid:
+    max_width: "1280px"
+    columns: 12
+    margin: "clamp(1.5rem, 5vw, 4rem)"
+    gap: "1.5rem"
+
+# ----------------------------------------------------------
+# MOTION & ANIMATION
+# ----------------------------------------------------------
+motion:
+  level: full
+  patterns:
+    - text-reveal
+    - scroll-reveal
+    - hover-lift
+    - smooth-scroll
+    - cursor-spotlight
+    - grain-noise
+  choreography:
+    stagger_delay: "70ms"
+    page_entrance: cascade
+    easing_default: "power3.out"
+
+# ----------------------------------------------------------
+# PAGE STRUCTURE
+# ----------------------------------------------------------
+pages:
+  - id: home
+    sections:
+      - type: hero
+        variant: animated-text-reveal
+        content:
+          overline: "Built with Claude Code"
+          headline: "Things I Made While Talking to Machines"
+          subheadline: "A portfolio of tools, visualizations, and automations — all conjured through conversation with AI."
+          cta:
+            primary: { text: "See the Work", href: "#portfolio" }
+
+      - type: content
+        variant: split-image-text
+        id: about
+        content:
+          headline: "Down the Rabbit Hole"
+          body: |
+            We are all mad here, and the madness is this: you can describe a thing
+            that does not yet exist and watch it assemble itself before your eyes.
+            Not with hammers or compilers, but with words — plain, imprecise,
+            beautifully human words.
+
+            "Begin at the beginning," the King said, very gravely, "and go on till
+            you come to the end: then stop." But the beginning is a conversation,
+            and the end is a living, breathing tool. The middle is where the
+            curious magic happens — where intent becomes implementation, where
+            a mumbled wish becomes working code.
+
+            Every project here began as a thought spoken aloud to Claude.
+            Some emerged fully formed, like Athena from the forehead of Zeus.
+            Others required patience, iteration, the occasional argument about
+            semicolons. All of them exist because the distance between
+            imagination and creation has collapsed to the width of a prompt.
+
+      - type: content
+        variant: bento-grid
+        id: portfolio
+        content:
+          headline: "The Collection"
+          subheadline: "Five projects, five conversations, five rabbit holes."
+          items:
+            - title: "Web Design Pipeline"
+              description: "A pipeline that builds award-quality websites from YAML design briefs. Claude reads patterns, generates HTML/CSS/JS with GSAP animations, validates with Playwright screenshots and axe-core, then iterates until convergence. This very page was built by it."
+              tags: [GSAP, Playwright, Node.js, YAML]
+              url: "https://github.com/aes87/web-design-pipeline"
+              featured: true
+
+            - title: "AI 3D Modeling"
+              description: "An AI-native 3D printing pipeline where Claude writes OpenSCAD models from natural language descriptions, validates them automatically, and iterates until they pass structural and printability checks."
+              tags: [OpenSCAD, 3D Printing, Claude Code]
+              url: "https://github.com/aes87/ai-3d-modeling"
+
+            - title: "Mortgage Viz"
+              description: "Interactive mortgage payment heatmap built with React and D3. Features amortization schedules, affordability overlays, and scenario comparison — turning opaque financial math into tactile visual understanding."
+              tags: [React, D3.js, Data Viz]
+              url: "https://github.com/aes87/mortgage-viz"
+
+            - title: "Garden Assist"
+              description: "A home vegetable garden planner for Zone 6b Warren County NJ. Plans planting schedules, companion groupings, and harvest windows for a 2026 growing season."
+              tags: [HTML, Planning, Agriculture]
+              url: "https://github.com/aes87/garden-assist"
+
+            - title: "Automated Martha Tek"
+              description: "Build guide for a fully automated Martha tent fruiting chamber. Sensors, controllers, and humidity management for hands-off mushroom cultivation."
+              tags: [Automation, IoT, Mycology]
+              url: "https://github.com/aes87/automated-martha-tek"
+
+      - type: content
+        variant: timeline-vertical
+        id: process
+        content:
+          headline: "How the Sausage Gets Made"
+          subheadline: "Or: a reasonably accurate account of talking to machines until things appear."
+          steps:
+            - title: "The Incantation"
+              body: "'Curiouser and curiouser!' cried Alice. You describe what you want in plain language — a visualization, a tool, a guide. The words don't need to be precise. They need to be honest."
+            - title: "The Interpretation"
+              body: "Claude reads your words the way the Cheshire Cat reads intentions — not literally, but deeply. It maps your wish to patterns, structures, and idioms it has consumed from the collective output of a million developers."
+            - title: "The Manifestation"
+              body: "Code appears. Not all at once, but in thoughtful layers: structure first, then style, then motion. Like watching a photograph develop in a darkroom, the thing you described slowly resolves into focus."
+            - title: "The Negotiation"
+              body: "'Would you tell me, please, which way I ought to go from here?' You review, you redirect, you refine. The machine does not sulk. It does not insist. It simply listens, adjusts, and tries again."
+            - title: "The Arrival"
+              body: "And then, quite suddenly, it works. The visualization renders. The model prints. The garden plan makes sense. You've arrived somewhere you couldn't have reached alone, by a path that didn't exist until you walked it."
+
+      - type: content
+        variant: split-image-text
+        id: philosophy
+        content:
+          headline: "The Tea Party Manifesto"
+          body: |
+            "Take some more tea," the March Hare said to Alice, very earnestly.
+            "I've had nothing yet," Alice replied, "so I can't take more."
+            "You mean you can't take less," said the Hatter.
+            "It's very easy to take more than nothing."
+
+            And that is precisely the point. Every tool here started from nothing —
+            from the absolute zero of an empty directory and a blinking cursor.
+            The extraordinary thing is not that AI can write code. Calculators can
+            calculate; that's not remarkable. The extraordinary thing is the
+            collaboration — the strange, productive dialogue between human intent
+            and machine capability.
+
+            We are not replaced. We are amplified. The garden still needs a
+            gardener who knows what to plant. The mortgage still needs a human
+            who understands what home means. The mushrooms still need someone
+            willing to get their hands dirty.
+
+            The machines just help us get there faster, with fewer typos.
+
+      - type: content
+        variant: minimal-form
+        id: contact
+        content:
+          headline: "Say Hello"
+          body: "The best conversations start with a simple hello. Or, if you prefer, with a detailed YAML specification."
+          links:
+            - text: "GitHub"
+              url: "https://github.com/aes87"
+            - text: "View Source"
+              url: "https://github.com/aes87/web-design-pipeline"
+
+# ----------------------------------------------------------
+# CONSTRAINTS
+# ----------------------------------------------------------
+constraints:
+  output: multi-file
+  target: github-pages
+  performance:
+    total_bundle_size: "95kb"
+  accessibility:
+    level: "WCAG-AA"
+    prefers_reduced_motion: required
