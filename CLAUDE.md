@@ -1,3 +1,5 @@
+@../../CLAUDE.md
+
 # Web Design Pipeline
 
 ## Overview

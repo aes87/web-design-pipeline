@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Things I Made While Talking to Machines</title>
+  <meta name="description" content="A portfolio of tools, visualizations, and automations built with Claude Code.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Skip link -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- Grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Cursor spotlight -->
+  <div class="cursor-spotlight" aria-hidden="true"></div>
+
+  <!-- Morphing blobs background -->
+  <div id="morphing-blobs" class="morphing-blobs" aria-hidden="true">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <path class="morphing-blobs__blob morphing-blobs__blob--0" d="M300,150.18 C374.45,150.86 379.44,159.9 422.13,229.49 C464.82,299.08 478.93,314.86 442.29,382.15 C405.65,449.44 375.23,459.64 300,453.78 C224.77,447.92 229.32,430.6 191.51,362.63 C153.7,294.67 141.42,290.96 173.97,227.23 C206.52,163.5 225.55,149.5 300,150.18" transform="translate(-42, -79)"/>
+      <path class="morphing-blobs__blob morphing-blobs__blob--1" d="M300,150.5 C399.98,151.11 419.92,133.99 464.89,204.8 C509.86,275.61 499.36,316.38 449.89,386.54 C400.42,456.7 383.58,442.33 300,438.66 C216.42,434.99 221.8,445.08 171.28,374.32 C120.76,303.56 92.99,269.93 131.61,202.78 C170.23,135.63 200.02,149.89 300,150.5" transform="translate(-77, 29)"/>
+      <path class="morphing-blobs__blob morphing-blobs__blob--2" d="M300,87.68 C405.44,84.57 424.47,94.87 484.72,193.35 C544.97,291.83 556.24,334.33 500.82,415.94 C445.4,497.55 420.82,465.18 300,465.37 C179.18,465.56 148.12,495.06 98.09,416.57 C48.07,338.08 72.68,302.4 133.25,203.73 C193.82,105.06 194.56,90.79 300,87.68" transform="translate(11, 75)"/>
+    </svg>
+  </div>
+
+  <!-- Navigation -->
+  <header class="nav">
+    <nav aria-label="Main navigation">
+      <a href="#" class="nav__logo" aria-label="Home">
+        <img class="nav__rabbit" src="assets/whiterabbiticon2.png" alt="" width="36" height="36" aria-hidden="true">
+        aes87
+      </a>
+      <ul class="nav__links">
+        <li><a href="#about" class="nav__link">About</a></li>
+        <li><a href="#portfolio" class="nav__link">Work</a></li>
+        <li><a href="#process" class="nav__link">Process</a></li>
+        <li><a href="#contact" class="nav__link">Contact</a></li>
+      </ul>
+      <button type="button" class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="nav-overlay" id="nav-menu" hidden>
+    <ul class="nav-overlay__links">
+      <li><a href="#about" class="nav-overlay__link" tabindex="-1">About</a></li>
+      <li><a href="#portfolio" class="nav-overlay__link" tabindex="-1">Work</a></li>
+      <li><a href="#process" class="nav-overlay__link" tabindex="-1">Process</a></li>
+      <li><a href="#contact" class="nav-overlay__link" tabindex="-1">Contact</a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Hero">
+      <!-- Hero rabbit decoration -->
+      <div class="hero__decoration" aria-hidden="true">
+        <svg class="hero__rings" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="300" cy="300" r="34.77" fill="none" stroke="oklch(0.72 0.12 165)" stroke-width="1.5" opacity="0.12"/>
+          <circle cx="300" cy="300" r="66.98" fill="none" stroke="oklch(0.78 0.14 55)" stroke-width="1.42" opacity="0.11"/>
+          <circle cx="300" cy="300" r="104.82" fill="none" stroke="oklch(0.72 0.12 165)" stroke-width="1.35" opacity="0.11"/>
+          <circle cx="300" cy="300" r="136.72" fill="none" stroke="oklch(0.78 0.14 55)" stroke-width="1.27" opacity="0.1"/>
+          <circle cx="300" cy="300" r="165.46" fill="none" stroke="oklch(0.72 0.12 165)" stroke-width="1.2" opacity="0.09"/>
+          <circle cx="300" cy="300" r="202.77" fill="none" stroke="oklch(0.78 0.14 55)" stroke-width="1.13" opacity="0.08"/>
+          <circle cx="300" cy="300" r="233.95" fill="none" stroke="oklch(0.72 0.12 165)" stroke-width="1.05" opacity="0.08"/>
+          <circle cx="300" cy="300" r="271.26" fill="none" stroke="oklch(0.78 0.14 55)" stroke-width="0.97" opacity="0.07"/>
+        </svg>
+        <img class="hero__rabbit" src="assets/whiterabbiticon2.png" alt="" width="400" height="400" loading="eager">
+      </div>
+      <div class="hero__content">
+        <p class="hero__overline">Built with Claude Code</p>
+        <h1 class="hero__headline" data-split="words">Things I Made While Talking to Machines</h1>
+        <p class="hero__subhead">A portfolio of tools, visualizations, and automations&mdash;all conjured through conversation with AI.</p>
+        <div class="hero__cta">
+          <a href="#portfolio" class="btn btn--primary">See the Work</a>
+        </div>
+      </div>
+      <div class="hero__scroll-indicator" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="hero__scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section section--about" id="about" aria-labelledby="about-heading">
+      <div class="section__container">
+        <div class="about__layout">
+          <div class="about__decorative" aria-hidden="true">
+            <img class="about__rabbit" src="assets/whiterabbiticon2.png" alt="" width="200" height="200">
+          </div>
+          <div class="about__text">
+            <h2 class="section__heading" id="about-heading">Down the Rabbit Hole</h2>
+            <div class="about__body">
+              <p>We are all mad here, and the madness is this: you can describe a thing that does not yet exist and watch it assemble itself before your eyes. Not with hammers or compilers, but with words&mdash;plain, imprecise, beautifully human words.</p>
+              <p>&ldquo;Begin at the beginning,&rdquo; the King said, very gravely, &ldquo;and go on till you come to the end: then stop.&rdquo; But the beginning is a conversation, and the end is a living, breathing tool. The middle is where the curious magic happens&mdash;where intent becomes implementation, where a mumbled wish becomes working code.</p>
+              <p>Every project here began as a thought spoken aloud to Claude. Some emerged fully formed, like Athena from the forehead of Zeus. Others required patience, iteration, the occasional argument about semicolons. All of them exist because the distance between imagination and creation has collapsed to the width of a prompt.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section class="section section--portfolio" id="portfolio" aria-labelledby="portfolio-heading">
+      <div class="section__container">
+        <header class="section__header">
+          <p class="section__overline">The Collection</p>
+          <h2 class="section__heading" id="portfolio-heading">Five Projects, Five Rabbit Holes</h2>
+        </header>
+        <div class="bento">
+
+          <article class="bento__card bento__card--featured">
+            <div class="bento__tags">
+              <span class="bento__tag">GSAP</span>
+              <span class="bento__tag">Playwright</span>
+              <span class="bento__tag">Node.js</span>
+            </div>
+            <h3 class="bento__title">Web Design Pipeline</h3>
+            <p class="bento__text">A pipeline that builds award-quality websites from YAML design briefs. Claude reads patterns, generates HTML/CSS/JS with GSAP animations, validates with Playwright screenshots and axe-core, then iterates until convergence. This very page was built by it.</p>
+            <a href="https://github.com/aes87/web-design-pipeline" class="bento__link" target="_blank" rel="noopener noreferrer">
+              View on GitHub <span aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+
+          <article class="bento__card">
+            <div class="bento__tags">
+              <span class="bento__tag">OpenSCAD</span>
+              <span class="bento__tag">3D Printing</span>
+            </div>
+            <h3 class="bento__title">AI 3D Modeling</h3>
+            <p class="bento__text">Claude writes OpenSCAD models from natural language, validates them automatically, and iterates until they pass structural and printability checks.</p>
+            <div class="bento__links">
+              <a href="https://github.com/aes87/ai-3d-modeling" class="bento__link" target="_blank" rel="noopener noreferrer">
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="https://github.com/aes87/ai-3d-modeling/blob/main/docs/humidity-output-v2.md" class="bento__link bento__link--secondary" target="_blank" rel="noopener noreferrer">
+                Design Example <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="bento__card">
+            <div class="bento__tags">
+              <span class="bento__tag">React</span>
+              <span class="bento__tag">D3.js</span>
+            </div>
+            <h3 class="bento__title">Mortgage Viz</h3>
+            <p class="bento__text">Interactive mortgage payment heatmap with amortization schedules, affordability overlays, and scenario comparison&mdash;turning opaque financial math into tactile visual understanding.</p>
+            <div class="bento__links">
+              <a href="https://github.com/aes87/mortgage-viz" class="bento__link" target="_blank" rel="noopener noreferrer">
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="https://aes87.github.io/mortgage-viz/" class="bento__link bento__link--secondary" target="_blank" rel="noopener noreferrer">
+                See the Output <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="bento__card">
+            <div class="bento__tags">
+              <span class="bento__tag">HTML</span>
+              <span class="bento__tag">Planning</span>
+            </div>
+            <h3 class="bento__title">Garden Assist</h3>
+            <p class="bento__text">A home vegetable garden planner for Zone 6b Warren County NJ. Plans planting schedules, companion groupings, and harvest windows.</p>
+            <div class="bento__links">
+              <a href="https://github.com/aes87/garden-assist" class="bento__link" target="_blank" rel="noopener noreferrer">
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="https://aes87.github.io/garden-assist/app/garden-hq.html" class="bento__link bento__link--secondary" target="_blank" rel="noopener noreferrer">
+                See the Output <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="bento__card">
+            <div class="bento__tags">
+              <span class="bento__tag">Automation</span>
+              <span class="bento__tag">IoT</span>
+            </div>
+            <h3 class="bento__title">Automated Martha Tek</h3>
+            <p class="bento__text">Build guide for a fully automated Martha tent fruiting chamber. Sensors, controllers, and humidity management for hands-off mushroom cultivation.</p>
+            <div class="bento__links">
+              <a href="https://github.com/aes87/automated-martha-tek" class="bento__link" target="_blank" rel="noopener noreferrer">
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="https://github.com/aes87/automated-martha-tek/blob/main/controller-build/hardware/diy-controller-build-guide.md" class="bento__link bento__link--secondary" target="_blank" rel="noopener noreferrer">
+                Design Example <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section section--process" id="process" aria-labelledby="process-heading">
+      <div class="section__container">
+        <header class="section__header">
+          <p class="section__overline">The Method</p>
+          <h2 class="section__heading" id="process-heading">How the Sausage Gets Made</h2>
+          <p class="section__description">Or: a reasonably accurate account of talking to machines until things appear.</p>
+        </header>
+        <div class="timeline">
+
+          <div class="timeline__item">
+            <div class="timeline__marker" aria-hidden="true"><span>1</span></div>
+            <div class="timeline__content">
+              <h3 class="timeline__title">The Incantation</h3>
+              <p class="timeline__text">&ldquo;Curiouser and curiouser!&rdquo; cried Alice. You describe what you want in plain language&mdash;a visualization, a tool, a guide. The words don&rsquo;t need to be precise. They need to be honest.</p>
+            </div>
+          </div>
+
+          <div class="timeline__item">
+            <div class="timeline__marker" aria-hidden="true"><span>2</span></div>
+            <div class="timeline__content">
+              <h3 class="timeline__title">The Interpretation</h3>
+              <p class="timeline__text">Claude reads your words the way the Cheshire Cat reads intentions&mdash;not literally, but deeply. It maps your wish to patterns, structures, and idioms it has consumed from the collective output of a million developers.</p>
+            </div>
+          </div>
+
+          <div class="timeline__item">
+            <div class="timeline__marker" aria-hidden="true"><span>3</span></div>
+            <div class="timeline__content">
+              <h3 class="timeline__title">The Manifestation</h3>
+              <p class="timeline__text">Code appears. Not all at once, but in thoughtful layers: structure first, then style, then motion. Like watching a photograph develop in a darkroom, the thing you described slowly resolves into focus.</p>
+            </div>
+          </div>
+
+          <div class="timeline__item">
+            <div class="timeline__marker" aria-hidden="true"><span>4</span></div>
+            <div class="timeline__content">
+              <h3 class="timeline__title">The Negotiation</h3>
+              <p class="timeline__text">&ldquo;Would you tell me, please, which way I ought to go from here?&rdquo; You review, you redirect, you refine. The machine does not sulk. It does not insist. It simply listens, adjusts, and tries again.</p>
+            </div>
+          </div>
+
+          <div class="timeline__item">
+            <div class="timeline__marker" aria-hidden="true"><span>5</span></div>
+            <div class="timeline__content">
+              <h3 class="timeline__title">The Arrival</h3>
+              <p class="timeline__text">And then, quite suddenly, it works. The visualization renders. The model prints. The garden plan makes sense. You&rsquo;ve arrived somewhere you couldn&rsquo;t have reached alone, by a path that didn&rsquo;t exist until you walked it.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="section section--philosophy" id="philosophy" aria-labelledby="philosophy-heading">
+      <div class="section__container">
+        <div class="philosophy__layout">
+          <div class="philosophy__quote" aria-hidden="true">
+            <span class="philosophy__mark">&ldquo;</span>
+          </div>
+          <div class="philosophy__text">
+            <h2 class="section__heading" id="philosophy-heading">The Tea Party Manifesto</h2>
+            <blockquote class="philosophy__blockquote">
+              <p>&ldquo;Take some more tea,&rdquo; the March Hare said to Alice, very earnestly. &ldquo;I&rsquo;ve had nothing yet,&rdquo; Alice replied, &ldquo;so I can&rsquo;t take more.&rdquo; &ldquo;You mean you can&rsquo;t take <em>less</em>,&rdquo; said the Hatter. &ldquo;It&rsquo;s very easy to take more than nothing.&rdquo;</p>
+            </blockquote>
+            <div class="philosophy__body">
+              <p>And that is precisely the point. Every tool here started from nothing&mdash;from the absolute zero of an empty directory and a blinking cursor. The extraordinary thing is not that AI can write code. Calculators can calculate; that&rsquo;s not remarkable. The extraordinary thing is the collaboration&mdash;the strange, productive dialogue between human intent and machine capability.</p>
+              <p>We are not replaced. We are amplified. The garden still needs a gardener who knows what to plant. The mortgage still needs a human who understands what home means. The mushrooms still need someone willing to get their hands dirty.</p>
+              <p>The machines just help us get there faster, with fewer typos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section section--contact" id="contact" aria-labelledby="contact-heading">
+      <div class="section__container">
+        <div class="contact__layout">
+          <h2 class="section__heading" id="contact-heading">Say Hello</h2>
+          <p class="contact__text">The best conversations start with a simple hello. Or, if you prefer, with a detailed YAML specification.</p>
+          <div class="contact__links">
+            <a href="https://github.com/aes87" class="btn btn--primary" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/aes87/web-design-pipeline" class="btn btn--ghost" target="_blank" rel="noopener noreferrer">View Source</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <p class="footer__text">Built by <a href="https://github.com/aes87" target="_blank" rel="noopener noreferrer">aes87</a> &times; Claude Code</p>
+      <p class="footer__meta">This page was generated by the <a href="https://github.com/aes87/web-design-pipeline" target="_blank" rel="noopener noreferrer">Web Design Pipeline</a>&mdash;a tool that builds itself.</p>
+    </div>
+  </footer>
+
+  <!-- SVG grain filter -->
+  <svg class="sr-only" aria-hidden="true">
+    <filter id="grain-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+  </svg>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
