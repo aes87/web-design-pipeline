@@ -927,6 +927,29 @@ body:hover .cursor-spotlight {
   height: 100%;
 }
 
+@media (max-width: 768px) {
+  .morphing-blobs svg {
+    width: 250%;
+    height: 100%;
+    margin-left: -75%;
+  }
+
+  .morphing-blobs__blob--0 {
+    opacity: 0.3;
+    filter: blur(60px);
+  }
+
+  .morphing-blobs__blob--1 {
+    opacity: 0.22;
+    filter: blur(70px);
+  }
+
+  .morphing-blobs__blob--2 {
+    opacity: 0.18;
+    filter: blur(80px);
+  }
+}
+
 .morphing-blobs__blob--0 {
   fill: var(--color-accent-primary);
   opacity: 0.2;
