@@ -168,6 +168,18 @@
         duration: 0.8,
       }, '-=0.1');
 
+      // Hero rabbit entrance
+      var heroRabbit = document.querySelector('.hero__rabbit');
+      if (heroRabbit) {
+        tl.to(heroRabbit, {
+          opacity: 1,
+          scale: 1,
+          duration: 1.4,
+          ease: 'power2.out',
+        }, 0.5);
+        gsap.set(heroRabbit, { scale: 0.85 });
+      }
+
       // Set initial states for gsap.to() targets
       gsap.set(overline, { y: 20 });
       gsap.set(subhead, { y: 20 });
@@ -291,10 +303,57 @@
     });
   }
 
+  /* --- Hero rabbit parallax --- */
+  function initHeroParallax() {
+    var decoration = document.querySelector('.hero__decoration');
+    if (!decoration) return;
+
+    gsap.to(decoration, {
+      y: -80,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.5,
+      },
+    });
+  }
+
+  /* --- Nav rabbit: slides in when about rabbit scrolls off --- */
+  function initNavRabbit() {
+    var aboutRabbit = document.querySelector('.about__rabbit');
+    var navRabbit = document.querySelector('.nav__rabbit');
+    if (!aboutRabbit || !navRabbit) return;
+
+    ScrollTrigger.create({
+      trigger: aboutRabbit,
+      start: 'bottom top',
+      onEnterBack: function () {
+        gsap.to(navRabbit, {
+          opacity: 0,
+          y: 20,
+          duration: 0.3,
+          ease: 'power2.in',
+        });
+      },
+      onLeave: function () {
+        gsap.to(navRabbit, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'back.out(1.4)',
+        });
+      },
+    });
+  }
+
   /* --- Init all --- */
   initHero();
+  initHeroParallax();
   initScrollReveals();
   initTimelineAnimation();
   initBentoTilt();
+  initNavRabbit();
 
 })();
