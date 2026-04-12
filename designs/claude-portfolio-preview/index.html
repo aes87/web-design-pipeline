@@ -120,27 +120,37 @@
       <div class="section__container">
         <header class="section__header">
           <p class="section__overline">The Collection</p>
-          <h2 class="section__heading" id="portfolio-heading">Five Projects, Five Rabbit Holes</h2>
+          <h2 class="section__heading" id="portfolio-heading">Six Projects, Six Rabbit Holes</h2>
         </header>
         <div class="bento">
 
+          <div class="bento__row bento__row--featured">
+
+          <!-- Row 1: two wide cards -->
           <article class="bento__card bento__card--featured">
             <div class="bento__tags">
-              <span class="bento__tag">GSAP</span>
-              <span class="bento__tag">Playwright</span>
-              <span class="bento__tag">Node.js</span>
+              <span class="bento__tag">VS Code</span>
+              <span class="bento__tag">Extension</span>
+              <span class="bento__tag">Claude Code</span>
+              <span class="bento__tag">Hooks</span>
             </div>
-            <h3 class="bento__title">Web Design Pipeline</h3>
-            <p class="bento__text">A pipeline that builds award-quality websites from YAML design briefs. Claude reads patterns, generates HTML/CSS/JS with GSAP animations, validates with Playwright screenshots and axe-core, then iterates until convergence. This very page was built by it.</p>
-            <a href="https://github.com/aes87/web-design-pipeline" class="bento__link" target="_blank" rel="noopener noreferrer">
-              View on GitHub <span aria-hidden="true">&rarr;</span>
-            </a>
+            <h3 class="bento__title">Claudelike Bar</h3>
+            <p class="bento__text">A VS Code sidebar that shows what every Claude Code terminal is doing at a glance. Live status tiles with animated dots, color-coded borders, drag-and-drop reordering, context window tracking, and a passive-aggressive mode that guilt-trips you when you ignore it. What would you do for a Claudelike Bar?</p>
+            <div class="bento__links">
+              <a href="https://github.com/aes87/claudelike-bar" class="bento__link" target="_blank" rel="noopener noreferrer">
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="https://aes87.github.io/claudelike-bar/" class="bento__link bento__link--secondary" target="_blank" rel="noopener noreferrer">
+                Live Preview <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
           </article>
 
-          <article class="bento__card">
+          <article class="bento__card bento__card--featured">
             <div class="bento__tags">
               <span class="bento__tag">OpenSCAD</span>
               <span class="bento__tag">3D Printing</span>
+              <span class="bento__tag">Validation</span>
             </div>
             <h3 class="bento__title">AI 3D Modeling</h3>
             <p class="bento__text">Claude writes OpenSCAD models from natural language, validates them automatically, and iterates until they pass structural and printability checks.</p>
@@ -154,10 +164,28 @@
             </div>
           </article>
 
+          </div>
+          <div class="bento__row">
+
+          <!-- Row 2: four regular cards -->
+          <article class="bento__card">
+            <div class="bento__tags">
+              <span class="bento__tag">GSAP</span>
+              <span class="bento__tag">Playwright</span>
+              <span class="bento__tag">Node.js</span>
+            </div>
+            <h3 class="bento__title">Web Design Pipeline</h3>
+            <p class="bento__text">A pipeline that builds award-quality websites from YAML design briefs. Claude generates HTML/CSS/JS, validates with Playwright and axe-core, then iterates until convergence. This very page was built by it.</p>
+            <a href="https://github.com/aes87/web-design-pipeline" class="bento__link" target="_blank" rel="noopener noreferrer">
+              View on GitHub <span aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+
           <article class="bento__card">
             <div class="bento__tags">
               <span class="bento__tag">React</span>
               <span class="bento__tag">D3.js</span>
+              <span class="bento__tag">Heatmap</span>
             </div>
             <h3 class="bento__title">Mortgage Viz</h3>
             <p class="bento__text">Interactive mortgage payment heatmap with amortization schedules, affordability overlays, and scenario comparison&mdash;turning opaque financial math into tactile visual understanding.</p>
@@ -173,8 +201,27 @@
 
           <article class="bento__card">
             <div class="bento__tags">
+              <span class="bento__tag">ESP32 HW</span>
+              <span class="bento__tag">Firmware</span>
+              <span class="bento__tag">IoT</span>
+            </div>
+            <h3 class="bento__title">Mushroom Controller</h3>
+            <p class="bento__text">Full AI-native design&mdash;hardware, firmware, web app, HA integration&mdash;and build guide for a fully automated Martha tent fruiting chamber.</p>
+            <div class="bento__links">
+              <a href="https://github.com/aes87/automated-martha-tek" class="bento__link" target="_blank" rel="noopener noreferrer">
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="https://github.com/aes87/automated-martha-tek/blob/main/controller-build/hardware/diy-controller-build-guide.md" class="bento__link bento__link--secondary" target="_blank" rel="noopener noreferrer">
+                Build Guide <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="bento__card">
+            <div class="bento__tags">
               <span class="bento__tag">HTML</span>
               <span class="bento__tag">Planning</span>
+              <span class="bento__tag">Scheduling</span>
             </div>
             <h3 class="bento__title">Garden Assist</h3>
             <p class="bento__text">A home vegetable garden planner for Zone 6b Warren County NJ. Plans planting schedules, companion groupings, and harvest windows.</p>
@@ -188,23 +235,7 @@
             </div>
           </article>
 
-          <article class="bento__card">
-            <div class="bento__tags">
-              <span class="bento__tag">Automation</span>
-              <span class="bento__tag">IoT</span>
-            </div>
-            <h3 class="bento__title">Automated Martha Tek</h3>
-            <p class="bento__text">Build guide for a fully automated Martha tent fruiting chamber. Sensors, controllers, and humidity management for hands-off mushroom cultivation.</p>
-            <div class="bento__links">
-              <a href="https://github.com/aes87/automated-martha-tek" class="bento__link" target="_blank" rel="noopener noreferrer">
-                View on GitHub <span aria-hidden="true">&rarr;</span>
-              </a>
-              <a href="https://github.com/aes87/automated-martha-tek/blob/main/controller-build/hardware/diy-controller-build-guide.md" class="bento__link bento__link--secondary" target="_blank" rel="noopener noreferrer">
-                Design Example <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
-          </article>
-
+          </div>
         </div>
       </div>
     </section>
