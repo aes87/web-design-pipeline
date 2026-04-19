@@ -18,19 +18,13 @@ Every consumer should carry a `/* SHELL_VERSION: X.Y.Z */` marker immediately ab
 | Consumer | Location | Version |
 |---|---|---|
 | claudelike-bar demo | `/workspace/projects/claudelike-bar/index.html` (inline `<style>`) | 1.0.0 |
-| claude-portfolio-preview | `designs/claude-portfolio-preview/style.css` | pre-shell (source of 1.0.0; migrate next) |
+| claude-portfolio-preview | `designs/claude-portfolio-preview/style.css` | 1.0.0 |
 
 When bumping the shell, patch `portfolio-shell.css` first, then propagate the new block into every consumer and update the table above.
 
-### Migrating claude-portfolio-preview to 1.0.0
+## Changelog
 
-The preview *is* the source of 1.0.0, so the diff is small but non-trivial:
-1. Replace the tokens-through-`.section__description` run with the shell.
-2. Re-add page-local overrides after the shell: `.nav__rabbit { opacity: 0; transform: translateY(20px); pointer-events: none }` (GSAP entrance) and the hero/about/philosophy/bento/timeline `.reveal` companions already in place.
-3. Remove the duplicated `morphing-blobs` block and keyframes — the shell has them.
-4. Trim the reduced-motion block down to page-specific `.hero__rings`, `.hero__rabbit`, `.nav__rabbit` lines.
-
-Do this as its own commit so the before/after diff is clean.
+- **1.0.0** (2026-04-18) — Initial extraction from `claude-portfolio-preview`. First consumer on the shell: `claudelike-bar` (commit `027df0b`). Second consumer `claude-portfolio-preview` migrated in the following commit (page-local overrides: `.nav__rabbit` GSAP entrance state, `.hero__rings`/`.hero__rabbit`/`.nav__rabbit` reduced-motion additions). Includes a comment in the reduced-motion block documenting that the universal-selector rule is the backstop for static ambient layers like `.grain`.
 
 ## Why not a build step?
 
