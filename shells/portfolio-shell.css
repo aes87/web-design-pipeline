@@ -29,7 +29,7 @@
    How to adopt:
    1. Paste the full contents of this file into a <style> block
       at the top of your page (or include as a linked stylesheet).
-   2. Keep the "SHELL_VERSION: 1.0.0" marker above the paste so
+   2. Keep the "SHELL_VERSION: 1.1.0" marker above the paste so
       future audits can diff against the canonical version.
    3. Add page-specific CSS below the shell, not inside it.
    4. If you need to patch the shell, patch THIS file first, then
@@ -40,22 +40,52 @@
    - claudelike-bar/index.html (inline <style>)
    ============================================================ */
 
-/* SHELL_VERSION: 1.0.0 */
+/* SHELL_VERSION: 1.1.0 */
 
 /* ============================================================
    DESIGN TOKENS
    ============================================================ */
 :root {
-  /* Colors */
-  --color-bg-base: oklch(0.13 0.015 270);
-  --color-bg-surface: oklch(0.17 0.012 270);
-  --color-bg-elevated: oklch(0.21 0.01 270);
-  --color-fg-base: oklch(0.93 0.01 90);
-  --color-fg-muted: oklch(0.60 0.02 270);
-  --color-fg-subtle: oklch(0.58 0.015 270);
-  --color-accent-primary: oklch(0.78 0.14 55);
-  --color-accent-secondary: oklch(0.72 0.12 165);
-  --color-accent-glow: oklch(0.78 0.14 55 / 0.15);
+  /* ───────────────────────────────────────────────────────────
+     Colors — Editorial Palette (four-tier system).
+     Reference: git-publishing/STYLE_GUIDE.md § 6.6 Color Palette.
+     ─────────────────────────────────────────────────────────── */
+
+  /* Heroes — load-bearing identity */
+  --color-ink:    oklch(0.13 0.015 270);   /* #15151e — bg base */
+  --color-cream:  oklch(0.93 0.01 90);     /* #f5efe0 — fg base */
+  --color-ember:  oklch(0.78 0.14 55);     /* #e6a562 — signature */
+
+  /* Accents — supporting hues */
+  --color-sage:   oklch(0.72 0.12 165);    /* #6fd1b4 — cool counter */
+  --color-iris:   oklch(0.45 0.12 290);    /* #5b4488 — depth, blobs */
+  --color-clay:   oklch(0.59 0.13 35);     /* #b86c4a — warm bridge */
+
+  /* Neutrals — 6-stop scale, warm-cool family */
+  --color-onyx:   oklch(0.17 0.012 270);   /* #1c1c25 — surface 800 */
+  --color-slate:  oklch(0.21 0.01 270);    /* #25232f — surface 700 */
+  --color-pewter: oklch(0.40 0.022 270);   /* #4a4757 — mid 500 */
+  --color-mist:   oklch(0.60 0.02 270);    /* #878599 — muted 400 */
+  --color-linen:  oklch(0.74 0.012 90);    /* #b5b3a8 — subtle 200 */
+  --color-bone:   oklch(0.84 0.014 90);    /* #d4cfbf — subtle 100 */
+
+  /* States — semantic, editorial register (NOT Catppuccin) */
+  --color-fern:    oklch(0.55 0.13 140);   /* #3f7a4a — success */
+  --color-saffron: oklch(0.79 0.16 80);    /* #e8b53e — warning */
+  --color-garnet:  oklch(0.50 0.18 18);    /* #bc4036 — danger */
+  --color-sky:     oklch(0.61 0.12 245);   /* #5e8fc4 — info */
+
+  /* Legacy aliases — preserved for existing consumers; new code
+     should reference the named tokens above. */
+  --color-bg-base:           var(--color-ink);
+  --color-bg-surface:        var(--color-onyx);
+  --color-bg-elevated:       var(--color-slate);
+  --color-fg-base:            var(--color-cream);
+  --color-fg-muted:           var(--color-mist);
+  --color-fg-subtle:          oklch(0.58 0.015 270);
+  --color-accent-primary:     var(--color-ember);
+  --color-accent-secondary:   var(--color-sage);
+  --color-accent-glow:        oklch(0.78 0.14 55 / 0.15);
 
   /* Typography */
   --font-heading: 'Playfair Display', Georgia, serif;
