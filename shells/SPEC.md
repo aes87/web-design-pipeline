@@ -2,7 +2,7 @@
 
 ## What the shell is
 
-A CSS "base layer" that every aes87 portfolio page pastes in verbatim. It defines the design system (tokens, type scale, spacing, motion curves), the reset, the a11y primitives, the ambient visual layers (grain, cursor spotlight, morphing blobs), and the shared chrome (nav, buttons, section scaffolding, `.reveal` utility).
+A CSS "base layer" that every harteWired portfolio page pastes in verbatim. It defines the design system (tokens, type scale, spacing, motion curves), the reset, the a11y primitives, the ambient visual layers (grain, cursor spotlight, morphing blobs), and the shared chrome (nav, buttons, section scaffolding, `.reveal` utility).
 
 Page-specific styling — hero layouts, bento grids, timelines, project-specific components — lives below the shell in the page's own CSS.
 
@@ -70,7 +70,7 @@ For a new single-file HTML page:
 
   <header class="nav">
     <nav aria-label="Main navigation">
-      <a href="/" class="nav__logo"><img class="nav__rabbit" ...> aes87</a>
+      <a href="/" class="nav__logo"><img class="nav__rabbit" ...> harteWired</a>
       <ul class="nav__links">...</ul>
     </nav>
   </header>

@@ -1,6 +1,6 @@
 # Portfolio Shell
 
-Canonical design-system shell for aes87 portfolio pages. One file, one version, one source of truth for tokens + base layers + the reusable chrome (nav, buttons, sections, ambient effects).
+Canonical design-system shell for harteWired portfolio pages. One file, one version, one source of truth for tokens + base layers + the reusable chrome (nav, buttons, sections, ambient effects).
 
 ## Files
 
