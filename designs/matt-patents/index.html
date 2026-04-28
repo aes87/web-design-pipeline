@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patents — Matt Harte</title>
+  <meta name="description" content="Granted patents and published applications by Matthew V. Harte.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,200;9..144,300;9..144,400&family=JetBrains+Mono:wght@300;400&display=swap">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <main id="main-content" class="page">
+    <header class="topbar" role="banner">
+      <a class="topbar__home" href="https://mattharte.com/" aria-label="Back to mattharte.com">
+        <span class="topbar__home-arrow" aria-hidden="true">&larr;</span>
+        <span class="topbar__home-label">mattharte.com</span>
+      </a>
+      <span class="topbar__crumb" aria-hidden="true">/&nbsp;patents</span>
+    </header>
+
+    <section class="intro" aria-labelledby="intro-heading">
+      <p class="intro__eyebrow">Inventor record</p>
+      <h1 id="intro-heading" class="intro__title">Patents</h1>
+      <p class="intro__lede">
+        Inventions naming <em>Matthew&nbsp;V.&nbsp;Harte</em> as an inventor &mdash;
+        smart-home lighting controls, sensors, and load-control circuitry
+        developed at Lutron Electronics. One row per disclosure, headlined
+        by the most recent grant.
+      </p>
+      <dl class="intro__meta" aria-label="Portfolio summary">
+        <div class="intro__meta-row">
+          <dt>Disclosures</dt>
+          <dd data-summary="families">&mdash;</dd>
+        </div>
+        <div class="intro__meta-row">
+          <dt>Grants</dt>
+          <dd data-summary="granted">&mdash;</dd>
+        </div>
+        <div class="intro__meta-row">
+          <dt>Pending</dt>
+          <dd data-summary="published">&mdash;</dd>
+        </div>
+        <div class="intro__meta-row">
+          <dt>Updated</dt>
+          <dd>2026&middot;04</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="patents" aria-labelledby="patents-heading">
+      <h2 id="patents-heading" class="visually-hidden">Patent list</h2>
+
+      <div class="group" data-group="granted">
+        <header class="group__header">
+          <span class="group__rule" aria-hidden="true"></span>
+          <h3 class="group__title">Granted disclosures</h3>
+          <span class="group__rule group__rule--long" aria-hidden="true"></span>
+        </header>
+
+        <ol class="patent-list" data-list="granted">
+          <!-- Granted disclosures (one row per family) rendered from data -->
+        </ol>
+      </div>
+
+      <div class="group" data-group="published" hidden>
+        <header class="group__header">
+          <span class="group__rule" aria-hidden="true"></span>
+          <h3 class="group__title">Pending disclosures</h3>
+          <span class="group__rule group__rule--long" aria-hidden="true"></span>
+        </header>
+
+        <ol class="patent-list" data-list="published">
+          <!-- Pending-only disclosures rendered from data -->
+        </ol>
+      </div>
+    </section>
+
+    <footer class="footer" role="contentinfo">
+      <div class="footer__inner">
+        <span class="footer__left">Matt Harte</span>
+        <a class="footer__contact" href="mailto:hello@mattharte.com">Contact me</a>
+        <span class="footer__right">2026</span>
+      </div>
+    </footer>
+  </main>
+
+  <template id="patent-row-template">
+    <li class="patent">
+      <a class="patent__link" target="_blank" rel="noopener">
+        <span class="patent__via" aria-hidden="true"></span>
+        <span class="patent__number"></span>
+        <span class="patent__body">
+          <span class="patent__title"></span>
+          <span class="patent__brief"></span>
+        </span>
+        <span class="patent__arrow" aria-hidden="true">&#8599;</span>
+      </a>
+    </li>
+  </template>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
