@@ -209,7 +209,7 @@ pages:
           body: "The best conversations start with a simple hello. Or, if you prefer, with a detailed YAML specification."
           links:
             - text: "GitHub"
-              url: "https://github.com/aes87"
+              url: "https://github.com/harteWired"
             - text: "View Source"
               url: "https://github.com/harteWired/web-design-pipeline"
 
