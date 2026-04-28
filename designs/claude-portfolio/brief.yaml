@@ -135,28 +135,28 @@ pages:
             - title: "Web Design Pipeline"
               description: "A pipeline that builds award-quality websites from YAML design briefs. Claude reads patterns, generates HTML/CSS/JS with GSAP animations, validates with Playwright screenshots and axe-core, then iterates until convergence. This very page was built by it."
               tags: [GSAP, Playwright, Node.js, YAML]
-              url: "https://github.com/aes87/web-design-pipeline"
+              url: "https://github.com/harteWired/web-design-pipeline"
               featured: true
 
             - title: "AI 3D Modeling"
               description: "An AI-native 3D printing pipeline where Claude writes OpenSCAD models from natural language descriptions, validates them automatically, and iterates until they pass structural and printability checks."
               tags: [OpenSCAD, 3D Printing, Claude Code]
-              url: "https://github.com/aes87/ai-3d-modeling"
+              url: "https://github.com/harteWired/ai-3d-modeling"
 
             - title: "Mortgage Viz"
               description: "Interactive mortgage payment heatmap built with React and D3. Features amortization schedules, affordability overlays, and scenario comparison — turning opaque financial math into tactile visual understanding."
               tags: [React, D3.js, Data Viz]
-              url: "https://github.com/aes87/mortgage-viz"
+              url: "https://github.com/harteWired/mortgage-viz"
 
             - title: "Garden Assist"
               description: "A home vegetable garden planner for Zone 6b Warren County NJ. Plans planting schedules, companion groupings, and harvest windows for a 2026 growing season."
               tags: [HTML, Planning, Agriculture]
-              url: "https://github.com/aes87/garden-assist"
+              url: "https://github.com/harteWired/garden-assist"
 
             - title: "Automated Martha Tek"
               description: "Build guide for a fully automated Martha tent fruiting chamber. Sensors, controllers, and humidity management for hands-off mushroom cultivation."
               tags: [Automation, IoT, Mycology]
-              url: "https://github.com/aes87/automated-martha-tek"
+              url: "https://github.com/harteWired/automated-martha-tek"
 
       - type: content
         variant: timeline-vertical
@@ -211,7 +211,7 @@ pages:
             - text: "GitHub"
               url: "https://github.com/aes87"
             - text: "View Source"
-              url: "https://github.com/aes87/web-design-pipeline"
+              url: "https://github.com/harteWired/web-design-pipeline"
 
 # ----------------------------------------------------------
 # CONSTRAINTS
